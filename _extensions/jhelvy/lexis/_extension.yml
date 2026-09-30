@@ -1,0 +1,87 @@
+title: Lexis
+author: John Paul Helveston
+version: 1.0.0
+quarto-required: ">=1.4.0"
+contributes:
+  formats:
+    common:
+      # John's xaringan paradigm: `---` starts every slide and all headings are
+      # just styled text within a slide. Slide modifiers (inverse/center/middle/
+      # backgrounds) are written as shortcodes instead of heading attributes and
+      # applied by the lexis.lua filter. See lexis.lua for the mechanism.
+      slide-level: 0
+      theme: [lexis.scss]
+      slide-number: c/t
+      incremental: false
+      highlight-style: github
+      width: 1600
+      height: 900
+      # Scale the slide to fully "contain" the window (like xaringan) instead of
+      # reveal's default ~10% margin, which insets the slide on all four sides.
+      # With margin 0 the 16:9 slide fills one axis and the gray letterbox
+      # (see lexis.scss) shows only on the other — never all the way around.
+      margin: 0
+      # Quarto's reveal template unconditionally emits a title slide whenever
+      # `title:` is set ($if(title)$$title-slide.html()$$endif$ — there's no
+      # YAML switch to disable it). title-slide.html is a no-op partial that
+      # suppresses it, so the ONLY title slide is the one authors write
+      # themselves as the deck's first `---` slide (using {{< meta title >}}
+      # etc. + the shortcodes below). See the top of demo.qmd for the pattern.
+      template-partials:
+        - title-slide.html
+      # One PDF page per slide, always. reveal's print view otherwise measures
+      # each slide and spills anything taller than the 1600x900 canvas onto a
+      # second (mostly blank) page — but on screen lexis CLIPS that overflow to
+      # the card, so the extra page shows content the presenter never sees and
+      # throws the page count off. Clamping to 1 makes the export match the
+      # deck: `.pdf-page` clips exactly the way `.slides` does in the browser.
+      pdf-max-pages-per-slide: 1
+      # Put the fragment index in the URL hash (`#/12/0/2`, not just `#/12`) so
+      # that reloading — or clicking a link and coming back — lands on the slide
+      # AND the increment you left off on, instead of resetting the reveals.
+      fragment-in-url: true
+      # Open external links in a new tab. Following a link in place unloads the
+      # deck mid-presentation, and coming back re-runs reveal's setup; a new tab
+      # leaves the deck exactly where it was. Internal links (`#/12`, relative
+      # paths) are unaffected, so slide-to-slide navigation still works.
+      link-external-newwindow: true
+      # Turns reveal's overview (`o`) into a scrollable grid of thumbnails like
+      # the xaringan tile view. The layout is CSS (lexis.scss); this is the
+      # handful of measurements CSS can't make on its own. lexis-nav.html
+      # replaces reveal's 1-step-per-second wheel throttle with something that
+      # keeps up with a real scroll.
+      include-in-header:
+        - lexis-overview.html
+        - lexis-nav.html
+        # Hands the iconify web component the Quarto mark locally, so
+        # `{{< quarto >}}` still renders with no network. See the file.
+        - lexis-offline-icons.html
+      # Rotation + swipe remap for a phone held upright; the look it goes with is
+      # the "Handheld portrait" block in lexis.scss.
+      include-after-body:
+        - lexis-orientation.html
+        # The bottom-left corner controls: home, overview, full screen, and the
+        # reveal.js-menu hamburger adopted into the same group. After-body
+        # because it adopts a node the menu plugin builds at runtime.
+        - lexis-controls.html
+        # Reads the deck's rendered footer and injects the per-page `content:`
+        # rule the PDF export stamps on every page. After-body so the footer
+        # markup it reads is already parsed.
+        - lexis-print-footer.html
+      # BUILD reveal's edge arrows; lexis.scss then hides them everywhere except
+      # a phone held upright, which is the only place they are wanted (tap to
+      # advance). Quarto's default is `controls: auto`, which its quarto-support
+      # plugin resolves at runtime to `(inIframe && !localhost) ||
+      # hasVerticalSlides` — so a deck opened directly, or served from localhost
+      # during preview, never gets them at all. The visibility decision belongs
+      # to a media query, not to that expression, so pin the arrows on here and
+      # let the CSS choose. See "reveal's edge arrows" in lexis.scss.
+      controls: true
+      controls-layout: edges
+      # Run AFTER Quarto expands the {{< inverse >}}/etc. shortcodes into markers.
+      filters:
+        - at: post-quarto
+          path: lexis.lua
+    revealjs: {}
+  shortcodes:
+    - lexis-shortcodes.lua

@@ -1,0 +1,1872 @@
+/*-- scss:defaults --*/
+
+/*
+Lexis theme for Quarto reveal.js — Week 1 (Getting Started).
+Ported from the xaringan (remark.js) `lexis.css` + `lexis-fonts.css` used in
+EMSE 4572/6572 through 2025. Extends the shared W2 base with the few idioms the
+W1 deck leans on: full-slide `.center`/`.left` alignment and `.blackborder`
+image framing. The goal is visual parity with the old decks while
+moving to Quarto reveal.js. Two-part structure:
+  - scss:defaults  = fonts, colors, and reveal Sass variables (the "settings")
+  - scss:rules     = retargeted custom rules + the helper classes decks rely on
+
+Original xaringan css adapted from Allison Hill & Silvia Canelón.
+*/
+
+// ---- Fonts ----------------------------------------------------------------
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+$font-body:   Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+$font-header: "Fira Sans Condensed", Tahoma, "Helvetica Neue", Helvetica, Arial, sans-serif;
+$font-mono:   SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+$font-fancy:  "Lobster Two", cursive;
+
+// ---- Color palette (mirrors the old :root vars) ---------------------------
+$color-white:      #FFFFFF;
+$color-red:        #E74A2F;
+$color-orange:     #fa7b3c;
+$color-yellow:     #EFB73E;
+$color-gold:       #e5bf00;
+$color-green:      #38B44A;
+$color-darkgreen:  #2c8475;
+$color-blue:       #007bff;
+$color-lightblue:  #cce5ff;
+$color-dodgerblue: #1E90FF;
+$color-darkblue:   #003087;
+$color-purple:     #772953;
+$color-black:      #121212;
+$color-graylight:  #EAE9EA;
+$color-gray:       #696969;
+$color-tan:        #d9d9d9;
+
+// ---- Reveal.js theme variables --------------------------------------------
+// Slide surface + text
+$body-bg:    $color-graylight;
+$body-color: #000000;
+
+// Links
+$link-color:       $color-blue;
+$link-color-hover: $color-purple;
+$selection-bg:     rgba(97, 172, 240, .5);
+
+// Type
+$font-family-sans-serif: $font-body;
+$font-family-monospace:  $font-mono;
+
+// Root size. reveal scales the slide canvas to fit, so this is the anchor the
+// heading sizes below are expressed against. Old deck used ~20pt body text.
+$presentation-font-size-root: 34px;
+$presentation-line-height:    1.35;
+
+// Headings (Fira Sans Condensed). Sizes are em-multiples of the body size,
+// preserving the old 42 / 34 / 27 / 24 pt vs 20 pt body ratios.
+$presentation-heading-font:        $font-header;
+$presentation-heading-color:       #000000;
+$presentation-heading-font-weight: 400;
+$presentation-heading-line-height: 1.1;
+$presentation-h1-font-size: 2.10em;
+$presentation-h2-font-size: 1.70em;
+$presentation-h3-font-size: 1.35em;
+$presentation-h4-font-size: 1.20em;
+
+// Code
+$code-color:           $color-darkgreen;   // inline code
+$code-block-font-size: 0.85em;
+$code-block-bg:        #ffffff;
+
+// Default gutter between `.col` columns (override per-row with `gap=`).
+$cols-gap: 1.5em;
+
+// Default gutter between `.card` boxes in a grid (override with `gap=`).
+$cards-gap: 0.7em;
+
+// The palette by name, re-exported as CSS custom properties in the rules below.
+// It is what lets an authoring attribute NAME a color — `::: {.card
+// color="green"}` — without lexis.lua having to carry a copy of these hexes.
+$lexis-palette: (
+  white: $color-white,          red: $color-red,
+  orange: $color-orange,        yellow: $color-yellow,
+  gold: $color-gold,            green: $color-green,
+  darkgreen: $color-darkgreen,  blue: $color-blue,
+  lightblue: $color-lightblue,  dodgerblue: $color-dodgerblue,
+  darkblue: $color-darkblue,    purple: $color-purple,
+  black: $color-black,          graylight: $color-graylight,
+  gray: $color-gray,            tan: $color-tan,
+);
+
+// Reveal's bottom progress-bar fill color (its default is plain white).
+// To turn the bar off entirely, no theme edit needed: set `progress: false`
+// in the document's YAML — it's a native Quarto/reveal.js option.
+$progress-color: $color-blue;
+
+
+/*-- scss:rules --*/
+
+// ---- Palette as CSS custom properties --------------------------------------
+// See $lexis-palette above for why these exist.
+:root {
+  @each $name, $hex in $lexis-palette {
+    --lexis-color-#{$name}: #{$hex};
+  }
+}
+
+// ---- Slide letterbox (xaringan "card" look) -------------------------------
+// reveal scales `.reveal .slides` to exactly the deck's 16:9 box and centers
+// it; with `margin: 0` (set in _extension.yml) that box fills the window on
+// one axis and leaves a letterbox on the other. Paint the box as the light
+// "card" and fill the surrounding `.reveal-viewport` with the darker gray, so
+// the margins read like the old xaringan deck — a gray band on top/bottom OR
+// left/right, never all four sides at once.
+.reveal-viewport {
+  background-color: $color-gray;
+  // Size of the gray letterbox band on each axis. reveal centers the scaled
+  // deck, so half the leftover on each axis is the band width. The UI chrome
+  // (slide number, menu button, footer bar) is positioned against the full
+  // window, which drops it into that gray band — off the slide. Expose the band
+  // size so those elements can be nudged back onto the card, like the old
+  // xaringan deck where the page number lived inside the slide.
+  //
+  // The card size is read from REVEAL'S OWN measurements — it publishes
+  // `--slide-width`/`--slide-height`/`--slide-scale` on this element from
+  // `layout()` — rather than re-deriving it from `vw`/`vh`. Two places where
+  // the viewport-unit version was wrong:
+  //   * iOS Safari. `100vh` is the LARGE viewport (URL bar hidden) while reveal
+  //     scales to the visible height, so `177.78vh` overshot, `min()` clamped to
+  //     `100vw`, and the band computed to ZERO — a {{< bg-color >}} slide then
+  //     bled its color edge to edge instead of stopping at the card.
+  //   * The portrait rotation below, which swaps what `vw` and `vh` mean
+  //     relative to the stage but leaves reveal's own numbers correct.
+  // The percentage resolves against each user's containing block, which is the
+  // window for the `position: fixed` chrome and `.reveal` for `.backgrounds` —
+  // the same box either way. `max()` keeps the band non-negative in the modes
+  // where reveal never runs `layout()` and the scale falls back to 1.
+  --lexis-lb-x: max(0px, calc((100% - var(--slide-width,  1600px) * var(--slide-scale, 1)) / 2));
+  --lexis-lb-y: max(0px, calc((100% - var(--slide-height,  900px) * var(--slide-scale, 1)) / 2));
+
+  // Overview-mode (`o`) tile grid; see the block below. lexis-overview.js
+  // overwrites `--lexis-ov-scale` on THIS element (inline styles win the
+  // cascade), which is why the two derived values live in this same rule: a
+  // custom property resolves its own `var()`s where it is declared, so
+  // declaring them here is what lets them follow the scale the script picks.
+  // The fallbacks keep the grid usable if the script never runs.
+  --lexis-ov-scale: .25;
+  --lexis-ov-gap: 26px;  // COLUMN gap; keep in sync with GAP in lexis-overview.html
+  --lexis-ov-row-gap: 58px; // taller: holds the per-tile number below each tile
+  --lexis-ov-pad: 30px;  // keep in sync with PAD in lexis-overview.html
+  --lexis-ov-tile-w: calc(var(--slide-width, 1600px) * var(--lexis-ov-scale));
+  // One REAL pixel, expressed inside the zoomed tile: every border, shadow and
+  // font size in a tile is multiplied by the scale, so anything that should
+  // stay a fixed on-screen size has to be divided by it first.
+  --lexis-ov-px: calc(1px / var(--lexis-ov-scale));
+
+  // One STAGE pixel for the FIXED chrome (the footer bar and the slide
+  // number). Those sit outside the scaled stage, so they hold their px size
+  // while reveal shrinks the slide to fit: squeeze the window's height and the
+  // deck gets smaller while a full-size footer bar keeps eating the same strip
+  // of it, until the bar is sitting on the content. Scaling them by reveal's
+  // own `--slide-scale` keeps their proportion of the card constant, exactly
+  // as if they were drawn on the slide.
+  //
+  // `min()` caps it at the design size: reveal scales UP as well (Quarto allows
+  // `max-scale: 2`), and chrome that grew past 1:1 on a large monitor would be
+  // a second bug rather than a fix. Read from reveal's measurement rather than
+  // from `vw`/`vh` for the same reason the letterbox band is — see above.
+  --lexis-chrome-px: min(1px, 1px * var(--slide-scale, 1));
+}
+.reveal .slides  { background-color: $body-bg; }
+
+// ---- Handheld portrait: turn the deck, not the reader ----------------------
+// The stage is 16:9, i.e. landscape. On a phone held upright reveal scales that
+// stage down to the narrow width and leaves most of the screen gray, so the
+// slide arrives as a stamp the reader has to pinch at. Rotate the whole document
+// 90deg clockwise, sized to the SWAPPED viewport, so the slide uses the screen's
+// long side; the reader turns the device and gets a full-bleed landscape deck.
+//
+// `pointer: coarse` restricts this to devices whose PRIMARY input is a finger,
+// which is the only case where turning the device is the answer to a rotated
+// page. A desktop window dragged narrow also matches `orientation: portrait`,
+// but there the rotation is a trap: the picture turns while the trackpad,
+// scrollbars and the overview grid keep working on the screen's real axes. Those
+// machines keep the deck upright and simply letterbox it. A no-touch laptop
+// reports `pointer: fine`; an iPad reports coarse even with a trackpad attached.
+//
+// Why <body> and not `.reveal`: reveal derives its scale from `.reveal`'s
+// offsetWidth/offsetHeight, which are PRE-transform layout values. Sizing body
+// to the swapped viewport makes `.reveal` (width/height 100%) report landscape
+// dimensions, so reveal lays out for a landscape viewport on its own — and
+// `--slide-scale`, which the letterbox above reads, comes out right with it.
+// Rotating `.reveal` directly would leave reveal measuring the portrait box and
+// scaling the stage to the narrow side, which is the bug this replaces.
+//
+// The CSS handles what the deck LOOKS like; lexis-orientation.html handles the
+// two things CSS cannot — re-running reveal's layout after a flip, and making
+// swipes follow the rotated picture instead of the raw screen axes.
+//
+// reveal's zoom plugin sets `body.style.transition = "transform 0.8s ease"`
+// INLINE at init to animate alt-click zoom, and the rotation below is also a
+// transform on body, so it inherits that easing and the flip visibly swings.
+// Killing it here rather than inside the media query covers BOTH directions: a
+// rule scoped to portrait only covers the flip into portrait, and the moment the
+// query stops matching the easing is back for the flip out of it. `!important`
+// is required to beat the plugin's inline style; the only cost is that alt-click
+// zoom becomes instant too.
+body,
+body.reveal-viewport {
+  transition: none !important;
+}
+
+@media screen and (orientation: portrait) and (pointer: coarse) {
+  // The selector must reach CLASS specificity: reveal puts `.reveal-viewport` on
+  // <body> and reveal.css sets `.reveal-viewport { height: 100%; position:
+  // relative }`, which a bare `body` rule loses to — width would apply, height
+  // would not, and the rotated deck comes out square. Both selectors are listed
+  // so the bare-body fallback survives a build without the class.
+  //
+  // `screen` keeps this away from print/PDF export, which must stay upright.
+  // `svh` is the toolbar-visible viewport height on iOS; the deck never scrolls,
+  // so it is the stable measure (`100vh` would push the far edge behind Safari's
+  // bottom toolbar). `vh` stays as the fallback for browsers without
+  // small-viewport units; on desktop the two are equal.
+  body,
+  body.reveal-viewport {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vh;
+    width: 100svh;
+    height: 100vw;
+    transform-origin: top left;
+    transform: translateX(100vw) rotate(90deg);
+  }
+
+  // reveal only switches its nav arrows to the "edges" layout (one arrow
+  // centered on each slide edge) inside `@media (min-width: 500px)`, and that
+  // query measures the PHYSICAL viewport. Rotated, the deck is laid out along
+  // the device's long side, which clears 500px on any phone, but the physical
+  // width does not — so the arrows collapse into reveal's tiny bottom-right
+  // cluster and read as missing. Re-apply the edges layout with reveal's own
+  // values so the arrows sit where the rotated slide's edges actually are. The
+  // container's own inset is not repeated here: the letterbox rule further down
+  // positions it in every mode, at a specificity that wins either way.
+  .reveal-viewport { --r-controls-spacing: 0.8em; }
+
+  // The one place the arrows are wanted. The `.reveal.reveal` bump is what makes
+  // this win: the global `display: none` further down is also `!important` and
+  // comes LATER in the file, so at equal specificity it would take the tie.
+  .reveal.reveal .controls { display: block !important; }
+
+  .reveal .controls[data-controls-layout='edges'] {
+    .navigate-left,
+    .navigate-right,
+    .navigate-up,
+    .navigate-down {
+      bottom: auto;
+      right: auto;
+    }
+
+    .navigate-left  { top: 50%; left: var(--r-controls-spacing); margin-top: -1.8em; }
+    .navigate-right { top: 50%; right: var(--r-controls-spacing); margin-top: -1.8em; }
+    .navigate-up    { top: var(--r-controls-spacing); left: 50%; margin-left: -1.8em; }
+    .navigate-down  { bottom: calc(var(--r-controls-spacing) - 1.4em + 0.3em); left: 50%; margin-left: -1.8em; }
+  }
+}
+
+// ---- Overview mode (`o`) — xaringan-style tile grid -------------------------
+// reveal's stock overview lays every slide out in ONE horizontal row on a 3D
+// perspective plane and pans that row around, so a 50-slide deck is a strip you
+// scrub sideways through a keyhole. xaringan/remark's tile view is a wrapping,
+// scrollable grid of thumbnails — you see far more slides at once and can flick
+// through the whole deck with the mouse wheel. This block rebuilds that.
+//
+// The mechanism is to flatten reveal's layout rather than fight it: reveal
+// writes the row layout as INLINE `transform`s (on `.slides` and on every
+// `<section>`), and a stylesheet `!important` beats an inline declaration, so
+// zeroing them here leaves the sections as ordinary in-flow boxes. `.slides`
+// then becomes the scrolling grid container and each top-level section becomes
+// one cell, shrunk with `zoom`.
+//
+// `zoom`, not `transform: scale()`, is the load-bearing choice: transforms are
+// painted after layout, so a scaled 1600x900 section would still RESERVE
+// 1600x900 and every tile would overlap its neighbours. `zoom` scales the
+// layout box itself, so a zoomed section genuinely occupies one grid track.
+// Set it only on the top-level sections: `zoom` compounds down the tree, and
+// the leaf <section> inside a `.stack` would otherwise be scaled twice.
+//
+// Everything reveal already gets right is left alone — the click-to-navigate
+// handler it binds to each section, `.present` tracking, and `o`/Esc toggling
+// all work regardless of where the tiles are painted.
+//
+// Companion: lexis-overview.html (thumbnail scale, background slides, and
+// scrolling the current slide into view). See its header for why each of those
+// can't be done here.
+
+// reveal puts a 700px perspective on the overview container for its 3D row;
+// with the row gone it only warps the grid. Drop it.
+.reveal.overview { perspective: none !important; }
+
+// The grid container. reveal keeps `.slides` as a 1600x900 box pinned to the
+// window centre (inline width/height + a `translate(-50%,-50%) scale()`), so
+// every one of those has to be undone before it can fill the window and scroll.
+// The `.reveal.reveal` bump is REQUIRED: `.reveal.has-dark-background .slides`
+// and friends below match at the same specificity and would win on source
+// order whenever the current slide has a {{< bg-color >}} background.
+.reveal.reveal.overview .slides {
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: var(--lexis-ov-pad);
+  box-sizing: border-box;
+  transform: none !important;
+  perspective: none !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+  // reveal parks `pointer-events: none` on `.slides` and re-enables it per
+  // section; that leaves the gaps between tiles dead to the wheel, so a scroll
+  // started over a gap would fall through to the page instead of the grid.
+  pointer-events: auto;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, var(--lexis-ov-tile-w));
+  column-gap: var(--lexis-ov-gap);
+  row-gap: var(--lexis-ov-row-gap); // extra room for the number below each tile
+  justify-content: center;
+  align-content: start;
+  text-align: left;
+
+  // The backdrop BEHIND the tiles, so each one reads as a card. (Outside
+  // overview this same element is the card itself — see `.reveal .slides`.)
+  background-color: $color-gray !important;
+}
+
+// reveal moves its `.backgrounds` layer inside `.slides` for the duration of
+// overview, with each tile inline-transformed to sit under its slide in the ROW
+// layout — nonsense once the slides are in a grid. Hide it; lexis-overview.js
+// paints those slides' backgrounds onto the sections instead.
+.reveal.overview .slides > .backgrounds { display: none !important; }
+
+// One tile. The `display`/`position` overrides defeat reveal's own
+// `.reveal .slides > section { display: none; position: absolute }` plus the
+// inline `display: none` it writes on slides outside its 10-slide view
+// distance — without that, a long deck would render as a grid full of holes.
+.reveal.overview .slides > section {
+  display: block !important;
+  position: relative !important;
+  width: var(--slide-width, 1600px) !important;
+  height: var(--slide-height, 900px) !important;
+  zoom: var(--lexis-ov-scale);
+  transform: none !important;
+  transition: none !important;
+  // `visible`, not `hidden`: the per-tile number is drawn just BELOW the tile
+  // (in the row gap) as this element's ::after, so it must not be clipped.
+  // Content that overflows the slide is clipped on the inner leaf instead (see
+  // the `> section > section` rule); a bare non-stack slide is authored to the
+  // 1600x900 canvas, so there is nothing of its own to clip here.
+  overflow: visible;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+// The leaf <section> inside a `.stack` (the wrapper reveal builds around any
+// slide carrying a lexis shortcode) fills its tile. No `zoom` here — it
+// inherits the parent's.
+.reveal.overview .slides > section > section {
+  display: block !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  transform: none !important;
+  transition: none !important;
+  // Clips slide content here (the grid item above is now `overflow: visible` so
+  // its ::after number can hang into the row gap below the tile).
+  overflow: hidden;
+}
+
+// `.stack` needs its own selector for anything reveal sets on
+// `.reveal.overview .slides > section.stack` (padding/outline/overflow) — that
+// selector out-specifies the plain `> section` rule above. Its
+// `pointer-events: none` is left alone on purpose: reveal binds its
+// click-to-jump handler to leaf sections only, and the leaf covers the whole
+// tile, so clicks have to fall through the wrapper to reach it.
+.reveal.overview .slides > section.stack { overflow: visible; }
+
+// A thumbnail should show the WHOLE slide, fragments included — otherwise a
+// slide built out of `. . .` pauses is mostly blank space in the grid. reveal's
+// own overview rule only sets `opacity: 1` on fragments and leaves the
+// `visibility: hidden` from `.reveal .fragment:not(.custom)` in place, so they
+// stay invisible. This is the same override reveal itself applies when printing
+// (`html:not(.print-pdf) .reveal .slides section .fragment`), for the same
+// reason: one static image of the finished slide.
+.reveal.overview .slides section .fragment {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+}
+
+// The card color lives on `.slides` — ONE element, not the sections — which is
+// the backdrop here, so every tile has to paint its own. Exclusions:
+// `.inverse` (dark already, and this rule's specificity would flip it light),
+// and {{< bg-color >}} / {{< bg-image >}} slides, which lexis-overview.js
+// paints from their `data-background-*` attributes.
+.reveal.overview .slides section:not(.stack):not(.inverse):not([data-background-color]):not([data-background-image]) {
+  background-color: $body-bg;
+  height: 100%;
+}
+
+// Tile framing. reveal's stock highlight is a translucent gray outline on
+// `.present`/`:hover` at equal specificity to these, so this block wins only
+// because the theme is loaded after reveal.css — same bet the slide-number
+// rules below make. Every length is divided by the scale (`--lexis-ov-px`)
+// so borders and shadows stay one crisp on-screen pixel however small the
+// thumbnails get.
+.reveal.overview .slides > section,
+.reveal.overview .slides > section.stack {
+  outline: none;
+  box-shadow:
+    0 0 0 var(--lexis-ov-px) rgba(0, 0, 0, .22),
+    0 calc(2 * var(--lexis-ov-px)) calc(6 * var(--lexis-ov-px)) rgba(0, 0, 0, .28);
+}
+
+.reveal.overview .slides > section:hover,
+.reveal.overview .slides > section.stack:hover {
+  outline: none;
+  box-shadow:
+    0 0 0 calc(4 * var(--lexis-ov-px)) $color-yellow,
+    0 calc(3 * var(--lexis-ov-px)) calc(10 * var(--lexis-ov-px)) rgba(0, 0, 0, .45);
+}
+
+// Where you are now. Hover has to out-rank this (it's the thing under the
+// cursor), so it is listed after — equal specificity, later wins.
+.reveal.overview .slides > section.present,
+.reveal.overview .slides > section.stack.present {
+  outline: none;
+  box-shadow:
+    0 0 0 calc(4 * var(--lexis-ov-px)) $color-blue,
+    0 calc(3 * var(--lexis-ov-px)) calc(10 * var(--lexis-ov-px)) rgba(0, 0, 0, .45);
+}
+.reveal.overview .slides > section.present:hover,
+.reveal.overview .slides > section.stack.present:hover {
+  box-shadow:
+    0 0 0 calc(4 * var(--lexis-ov-px)) $color-yellow,
+    0 calc(3 * var(--lexis-ov-px)) calc(10 * var(--lexis-ov-px)) rgba(0, 0, 0, .45);
+}
+// reveal's own outline, on the leaf inside a stack.
+.reveal.overview .slides section.present,
+.reveal.overview .slides section:hover { outline: none; }
+
+// Per-tile page number ("12 / 55"), centered BELOW the tile in the row gap,
+// like the xaringan tile view — the deck's real slide number is a single
+// window-anchored element and is hidden below. lexis-overview.js writes the
+// attribute onto the grid item (see there for why), so `> section` targets it.
+// The attribute selector is REQUIRED: reveal kills `section::before/::after`
+// outright in overview (`display: none !important`), so this has to both
+// out-specify that and be `!important` itself. `top: 100%` drops it past the
+// bottom edge; the grid item is `overflow: visible`, so it shows in the gap.
+// One color for all tiles now — it sits on the gray backdrop, never on a tile.
+.reveal.overview .slides > section[data-lexis-ov-num]::after {
+  display: block !important;
+  content: attr(data-lexis-ov-num);
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 9 * var(--lexis-ov-px));
+  text-align: center;
+  z-index: 20;
+  font-family: $font-body;
+  font-size: calc(15 * var(--lexis-ov-px));
+  line-height: 1;
+  color: rgba(255, 255, 255, .92);
+  pointer-events: none;
+}
+
+// Window-anchored chrome that would otherwise float on top of the tiles: the
+// deck's slide number (every tile carries its own), the footer bar, the
+// progress bar, and the reveal.js-menu hamburger. `o` / Esc / clicking a tile
+// are all still there to get out with.
+.reveal.overview .slide-number,
+.reveal.overview > .footer,
+.reveal.overview .progress,
+.reveal.overview .slide-menu-button { display: none !important; }
+
+// ---- Scroll view (`r`) -----------------------------------------------------
+// reveal 5's scroll view (`.reveal-scroll` on the viewport) restacks every
+// slide into full-window `.scroll-page`s inside `.slides` and scrolls the
+// viewport. Two of our rules broke it (verified headlessly by toggling `r`
+// and reading scrollHeight):
+//   1. Our `.reveal:not(.overview) .slides { overflow: hidden }` clip rule
+//      (below) out-specifies reveal's own `.reveal-scroll .slides
+//      { overflow: visible }`, clipping all pages inside the 900px `.slides`
+//      box — scrollHeight collapsed to one page, so scrolling was dead and
+//      activation "jumped to the title slide" (reveal couldn't scroll down
+//      to the current slide's page).
+//   2. The `.slides` card background painted a stray light band across the
+//      top of the scroll strip.
+// In scroll view each section is forced to the full slide box by reveal
+// (width/height/transform !important), so the card color can live on the
+// sections themselves — same exclusions as overview mode above. Slides with
+// {{< bg-color >}} / {{< bg-image >}} keep working via the per-page
+// `.slide-background` reveal moves into each scroll page.
+// The `.reveal-viewport.reveal-scroll` double class is REQUIRED: it lifts
+// this above the clip rule's `.reveal:not(.overview) .slides` specificity,
+// which would otherwise win on source order.
+.reveal-viewport.reveal-scroll .reveal .slides {
+  overflow: visible;
+  background-color: transparent;
+}
+.reveal-viewport.reveal-scroll .reveal .slides section:not(.stack):not(.inverse):not([data-background-color]):not([data-background-image]) {
+  background-color: $body-bg;
+}
+
+// ---- Slide content insets (xaringan's roomy `.remark-slide-content`) --------
+// reveal ships its sections with no padding, so content sits flush against the
+// card edges (and wide code appears to run off). Restore breathing room. Target
+// only leaf sections (`:not(.stack)`) so the wrapper <section> reveal builds for
+// lexis's modified slides doesn't double the inset. box-sizing keeps the 1600x900
+// canvas intact while insetting the content.
+.reveal .slides section:not(.stack) {
+  box-sizing: border-box;
+  padding: 45px 90px 60px;
+}
+
+// Inverse slides are a dark CARD with the gray letterbox preserved, NOT a
+// full-window bleed. lexis.lua no longer sets `data-background-color` for
+// `.inverse`, so paint the card here instead.
+//
+// Painted on the SECTION itself, not the shared `.slides` parent. A prior
+// version painted `.slides:has(section.present.inverse)` — but `.slides` is
+// ONE element shared by every slide, and every individual `<section>` is
+// transparent by default, so that shared background is literally the only
+// color visible behind ANY slide. Gating it on `:present` made it correct
+// for single-slide viewing (only one slide visible at a time) but wrong the
+// moment more than one slide renders at once: in overview (`o`) and scroll
+// (`r`) mode reveal shows many sections simultaneously, so every tile ended
+// up sharing whichever ONE color `:present` last resolved to (verified
+// empirically — navigate to a non-inverse slide, then open overview, and
+// every `.inverse` tile including the current one turns light). Painting
+// the section directly makes the color intrinsic to that slide, correct in
+// every mode. `height: 100%` is required alongside it: outside overview
+// mode (where reveal forces this itself) a section is only as tall as its
+// content, not the full 900px card, so without it a short inverse slide
+// left a gap of `.slides`'s own light background showing beneath the text.
+// The paint is GUARDED, the height is not. `{{< inverse >}}` does two separable
+// jobs — flip the text light, and darken the card — and combining it with
+// `{{< bg-color >}}` / `{{< bg-image >}}` should keep the first while letting the
+// author choose the second:
+//
+//     {{< bg-color "#2e4057" >}}
+//     {{< inverse >}}
+//
+// Without the guard that slide renders black: the background shortcodes paint
+// reveal's `.backgrounds` layer, which sits BEHIND the section, so an opaque
+// section painted on top hides it completely and the shortcode reads as a
+// no-op. Keying off the attributes rather than reveal's own
+// `has-dark-background` class is deliberate — reveal derives that class from
+// the color's brightness, so a light `{{< bg-color >}}` wouldn't clear the
+// black, and it flags image backgrounds not at all.
+//
+// `height: 100%` still applies to every inverse slide, guard or no guard: it is
+// what stops a short slide from showing `.slides`'s own light background
+// beneath its text, and that is just as true when the color came from a
+// shortcode.
+.reveal .slides section.inverse:not([data-background-color]):not([data-background-image]) {
+  background-color: $color-black;
+}
+.reveal .slides section.inverse { height: 100%; }
+
+// Explicit full-bleed slides ({{< bg-color >}} / {{< bg-image >}}) DO use
+// reveal's own edge-to-edge background layer (behind `.slides`); drop the
+// card there to let that layer show through. Two selectors are needed
+// because reveal only flags COLOR backgrounds on `.reveal` (it reads the
+// color's brightness to pick has-dark/has-light); an image background gets
+// no flag at all — verified: on a {{< bg-image >}} slide the image layer
+// was loaded and visible but sat hidden behind the opaque `.slides` card,
+// while overview mode (tiles spread beyond the `.slides` box) showed it
+// fine. The `:has()` clause catches those image slides directly.
+.reveal.has-dark-background  .slides,
+.reveal.has-light-background .slides,
+.reveal:has(.slides section.present[data-background-image]) .slides {
+  background-color: transparent;
+}
+
+// ...but reveal's background layer (`.backgrounds`) fills the whole `.reveal`
+// element, i.e. the whole WINDOW, so {{< bg-color >}} / {{< bg-image >}} bleed
+// across the gray letterbox too. Inset the layer by the letterbox band so the
+// fill covers only the card and the gray margins survive, matching the letterbox
+// look of every other slide. Scoped out of overview mode (`o`): there reveal
+// lays the background tiles out in the same grid as the sections, and
+// offsetting the whole layer by the letterbox band would shift every
+// background tile off its slide whenever the window isn't exactly 16:9.
+// (Scroll view needs no exclusion — reveal hides `.backgrounds` there.)
+.reveal.reveal:not(.overview) .backgrounds {
+  top:    var(--lexis-lb-y);
+  left:   var(--lexis-lb-x);
+  width:  calc(100% - 2 * var(--lexis-lb-x));
+  height: calc(100% - 2 * var(--lexis-lb-y));
+}
+
+// ---- Clip content to the card ---------------------------------------------
+// Content taller/wider than the 1600x900 canvas (e.g. a long printed tibble)
+// otherwise spills past the card edge into the gray, because reveal leaves
+// `.slides` overflow visible. Clip it to the card. Excluded in overview mode
+// (`o`), where reveal deliberately lays the slides out in a grid larger than
+// `.slides` and needs the overflow to show.
+.reveal:not(.overview) .slides { overflow: hidden; }
+
+// ---- Links ----------------------------------------------------------------
+.reveal a {
+  border-bottom: none;
+  &:hover, &:focus {
+    color: $color-purple;
+    background: rgba(97, 172, 240, .5);
+  }
+}
+
+// ---- Inline code (not code blocks) ----------------------------------------
+.reveal :not(pre) > code {
+  color: $color-darkgreen;
+  background-color: transparent;
+  border-radius: 5px;
+}
+
+// ---- Source code blocks: white bg, thin black border ----------------------
+.reveal div.sourceCode {
+  background: #fff;
+  border-radius: 5px;
+  border: 1px solid #000;
+}
+.reveal pre {
+  border-radius: 5px;
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 0.5em 0;
+  box-shadow: none;
+}
+
+// ---- Printed code OUTPUT: white text on gray (mirrors .remark-code) --------
+// The inner <code> must be targeted too: Quarto's default
+// `.reveal pre code { background-color:#eae9ea; color:#000 }` otherwise paints
+// a light box + black text on top of the gray <pre>, washing this out.
+.reveal .cell-output pre,
+.reveal .cell-output-stdout pre,
+.reveal pre.text-output,
+.reveal .cell-output pre code,
+.reveal .cell-output-stdout pre code,
+.reveal pre.text-output code {
+  color: #fff;
+  background: $color-gray;
+  border: none;
+}
+
+// Wide printed output (e.g. head() of a wide data frame with options(width = 250))
+// must scroll sideways inside its gray box rather than wrap or get clipped. The
+// <pre> is the scroll container; the inner <code> must NOT wrap so the line
+// actually overflows and triggers the scrollbar.
+.reveal .cell-output pre,
+.reveal .cell-output-stdout pre,
+.reveal pre.text-output {
+  overflow-x: auto;
+}
+.reveal .cell-output pre code,
+.reveal .cell-output-stdout pre code,
+.reveal pre.text-output code {
+  white-space: pre;
+  word-wrap: normal;
+}
+
+// ---- Blockquotes ----------------------------------------------------------
+.reveal blockquote {
+  width: auto;
+  padding: 0.5em 1em;
+  border: 3px solid $color-blue;
+  border-radius: 10px;
+  background-color: $color-lightblue;
+  font-family: $font-header;
+  box-shadow: 4px 4px 8px 0 rgba(0, 0, 0, .2);
+  font-style: normal;
+}
+
+// ---- Tables: zebra striping in tan (mirrors old remark tables) ------------
+.reveal table {
+  border-collapse: collapse;
+  thead th { border-bottom: 1px solid #666; }
+  thead, tfoot, tr:nth-child(even) { background: $color-tan; }
+}
+.reveal .table-blank tr:nth-child(even) { background: transparent; }
+
+// ===========================================================================
+// INVERSE SLIDES
+// Pair with reveal's native full-bleed background, e.g.
+//   ## Title {.inverse background-color="#121212"}
+// The class flips text / code / link / strong colors; the background attribute
+// paints the whole slide.
+// ===========================================================================
+.reveal section.inverse,
+.reveal .inverse {
+  color: $color-white;
+
+  h1, h2, h3, h4, h5, h6,
+  .h1, .h2, .h3, .h4, .h5, .h6 { color: $color-white; }
+  strong { color: $color-white; }
+
+  a, a:visited {
+    color: $color-dodgerblue;
+    text-decoration: underline;
+  }
+  a:hover, a:focus { color: $color-purple; }
+
+  :not(pre) > code { color: $color-orange; background-color: transparent; }
+
+  // Tables go plain on dark slides. The light theme's tan zebra striping
+  // (and tan thead/tfoot) reads as gray blocks behind white text, so drop it
+  // entirely: every row gets the same transparent background and white text.
+  // Only the header hairline survives, lightened from #666 so it's visible
+  // on black. Selectors here out-specify the `.reveal table` block above.
+  table {
+    color: $color-white;
+
+    thead, tfoot, tr, tr:nth-child(even) { background: transparent; }
+    th, td { color: $color-white; }
+    thead th { border-bottom: 1px solid rgba($color-white, .4); }
+  }
+}
+
+// ===========================================================================
+// HELPER CLASSES (used inline as [text]{.class} or around blocks as ::: {.class})
+// ===========================================================================
+
+// ---- Alignment ------------------------------------------------------------
+// `.center` mirrors xaringan's `class: center` — applied to a whole slide
+// (## Title {.center}) it centers everything; applied to a block/span it
+// centers that. `.left` is the escape hatch for code inside a centered slide.
+.reveal .center { text-align: center; }
+.reveal .center img,
+.reveal .center table { margin-left: auto; margin-right: auto; }
+.reveal .left  { text-align: left; }
+.reveal .right { text-align: right; }
+
+// Center/align just a HEADING (xaringan `# .center[Title]`) without touching
+// the rest of the slide: written `# [Title]{.center}`, the class lands on a
+// span inside the heading, so promote it to a full-width aligned block.
+.reveal {
+  h1, h2, h3, h4, h5, h6,
+  .h1, .h2, .h3, .h4, .h5, .h6 {
+    > .center { display: block; text-align: center; }
+    > .left   { display: block; text-align: left; }
+    > .right  { display: block; text-align: right; }
+  }
+}
+
+// ---- Breathing room below a slide title -----------------------------------
+// The default gap under a slide title runs tight; open it up so body content
+// doesn't crowd the header (replaces hand-adding `<br>` after titles). Covers
+// title levels h1-h3. Only DIRECT-child titles are targeted, so column
+// sub-headings (inside `::: {.col}`) are left alone. The amount lives in the
+// `--title-gap` custom property, which inherits down the slide, so any slide can
+// retune it without a specificity fight — `{{< tight >}}` opts a slide out. The
+// gap holds on centered ({{< middle >}}) section slides too. To add EVEN MORE
+// space on a slide, an explicit `<br>` after the title still stacks on top.
+.reveal .slides section > h1,
+.reveal .slides section > h2,
+.reveal .slides section > h3 {
+  margin-bottom: var(--title-gap, 0.9em);
+}
+.reveal .slides section.tight { --title-gap: 0; }
+
+// ---- Black border around plot output --------------------------------------
+// The old deck wrapped rendered ggplots in `.blackborder[...]`. Alias of
+// `.border` above, kept by name so ported slides read like the originals.
+.reveal .blackborder img { border: 2px solid #000; }
+
+// ---- Synthetic slide-title heading -----------------------------------------
+// lexis.lua prepends an empty `.lexis-slide-title` heading to a modified
+// slide that doesn't already open with one (see its comment for why). Purely
+// structural — never shown.
+// Scoped to the heading itself: Pandoc hoists a promoted slide's leading
+// heading classes onto the <section> too, so a bare `.lexis-slide-title`
+// selector would hide the whole slide.
+.reveal :is(h1, h2, h3, h4, h5, h6).lexis-slide-title { display: none; }
+
+// ---- Heading-as-text classes ----------------------------------------------
+// The lexis.lua filter rewrites headings nested inside Divs (columns, etc.)
+// into `.h1`..`.h6` so they render as sized text without becoming their own
+// slide. Sizes/colors mirror the real reveal heading variables.
+.reveal {
+  .h1, .h2, .h3, .h4, .h5, .h6 {
+    display: block;
+    font-family: $font-header;
+    color: $presentation-heading-color;
+    font-weight: $presentation-heading-font-weight;
+    line-height: $presentation-heading-line-height;
+    margin: 0.2em 0 0.4em;
+  }
+  .h1 { font-size: $presentation-h1-font-size; }
+  .h2 { font-size: $presentation-h2-font-size; }
+  .h3 { font-size: $presentation-h3-font-size; }
+  .h4 { font-size: $presentation-h4-font-size; }
+  .h5 { font-size: 1.0em; }
+  .h6 { font-size: 0.9em; }
+}
+
+// ---- Fancy display font ---------------------------------------------------
+.reveal .fancy {
+  font-family: $font-fancy;
+  font-weight: 400;
+  font-style: italic;
+}
+.reveal .fira { font-family: $font-header; }
+
+// ---- Text colors ----------------------------------------------------------
+.reveal .white     { color: $color-white; }
+.reveal .red       { color: $color-red; }
+.reveal .orange    { color: $color-orange; }
+.reveal .yellow    { color: $color-yellow; }
+.reveal .green     { color: $color-green; }
+.reveal .darkgreen { color: $color-darkgreen; }
+.reveal .blue      { color: $color-blue; }
+.reveal .darkblue  { color: $color-darkblue; }
+.reveal .purple    { color: $color-purple; }
+.reveal .black     { color: $color-black; }
+.reveal .gray      { color: $color-gray; }
+
+// ---- Relative text sizes --------------------------------------------------
+// One system for everything: wrap any content — paragraphs, lists, code
+// chunks and their printed output — in ::: {.font70} etc. (or use
+// [text]{.font70} inline). All sizes inside are em/%-based and inherit, so
+// content scales proportionally and nothing compounds; code stays at
+// Quarto's usual 85%-of-surrounding-text ratio.
+.reveal .small { font-size: 70%; }
+.reveal .large { font-size: 160%; }
+@for $i from 2 through 40 {
+  $pct: $i * 5;
+  .reveal .font#{$pct} { font-size: #{$pct * 1%}; }
+}
+
+// ---- Image treatments -----------------------------------------------------
+.reveal img { border: 0 solid #000; box-shadow: none; }
+.reveal .border img        { border: 2px solid #000; }
+.reveal .borderthick img   { border: 7px solid #000; }
+.reveal .whiteborder img   { border: 2px solid #fff; }
+.reveal .whiteborderthick img { border: 7px solid #fff; }
+.reveal .noborder img      { border: 0 solid #000; }
+.reveal .circle img        { border-radius: 50%; }
+.reveal .polaroid img {
+  border: 10px solid #fff;
+  border-bottom: 45px solid #fff;
+  box-shadow: 3px 3px 3px #111;
+}
+.reveal .thumbnail img {
+  width: 15%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+// ---- Tabset panels ----------------------------------------------------------
+// Quarto's native `.panel-tabset` (xaringan `.panelset`) ships with a boxed
+// nav-tab look (bordered box around the active tab). Replace it with the old
+// lexis-panelset style: plain gray labels, a bold black label + thick
+// underline for the active tab, sitting on a thin baseline rule. Quarto's
+// tabby plugin adds the ARIA roles at runtime, so we target those instead of
+// nav-tabs/nav-link classes.
+.reveal .panel-tabset {
+  [role="tablist"] {
+    border-bottom: 1px solid $color-tan;
+    margin-bottom: 0.6em;
+  }
+  [role="tab"] {
+    border: none;
+    background: transparent;
+    margin: 0 1.4em 0 0;
+    padding: 0.2em 0 0.5em;
+    font-family: $font-header;
+    font-size: 1.1em;
+    color: $color-gray;
+    border-bottom: 3px solid transparent;
+  }
+  [role="tab"]:hover:not([aria-selected="true"]) {
+    color: $body-color;
+    border-bottom-color: $color-tan;
+  }
+  [role="tab"][aria-selected="true"] {
+    color: $body-color;
+    font-weight: 700;
+    border-bottom-color: $body-color;
+  }
+}
+.reveal section.inverse .panel-tabset,
+.reveal .inverse .panel-tabset {
+  [role="tablist"] { border-bottom-color: $color-gray; }
+  [role="tab"] { color: $color-tan; }
+  [role="tab"]:hover:not([aria-selected="true"]) {
+    color: $color-white;
+    border-bottom-color: $color-gray;
+  }
+  [role="tab"][aria-selected="true"] {
+    color: $color-white;
+    border-bottom-color: $color-white;
+  }
+}
+
+// ---- Footnote -------------------------------------------------------------
+.reveal .footnote {
+  position: absolute;
+  bottom: 2em;
+  padding-right: 4em;
+  font-size: 70%;
+  line-height: 1em;
+}
+
+// ---- Slimtitle (title-slide helper) ---------------------------------------
+.reveal .slimtitle {
+  font-family: $font-header;
+  font-weight: 500;
+  font-size: 55px;
+  margin-block-start: 0;
+  margin-block-end: 0.1em;
+}
+
+// ===========================================================================
+// SLIDE-LEVEL MODIFIERS (set by the {{< inverse >}} / {{< center >}} /
+// {{< middle >}} shortcodes, which lexis.lua hoists onto the slide <section>)
+// ===========================================================================
+
+// `middle` — vertically center the slide's content (xaringan `class: middle`).
+// The slide <section> is the reveal-managed flex container; stretch it to the
+// full canvas height and center its children on the cross axis.
+.reveal .slides section.middle {
+  height: 100%;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+}
+
+// `no-slide-number` — reveal mirrors a slide's `data-state` onto the
+// `.reveal-viewport` element while that slide is active, so we can hide the
+// slide number just for this slide.
+.reveal-viewport.no-slide-number .slide-number { display: none !important; }
+
+// ===========================================================================
+// COLUMN LAYOUTS
+// `::: {.col width="60%" gap="2em" valign="middle"}`. lexis.lua's group_cols
+// wraps any run of 2+ consecutive `.col` Divs in a `.cols-row` flex
+// container and turns `width` into that column's flex-basis — no outer
+// wrapper div to write, no fixed set of splits to memorize. `width` is
+// optional; columns without it share the remaining space evenly. `gap`/
+// `valign` are read off whichever `.col` in the row sets them.
+// ===========================================================================
+.reveal .cols-row {
+  display: flex;
+  gap: $cols-gap;
+  align-items: flex-start;
+
+  > .col {
+    flex: 1 1 0;
+    min-width: 0;
+    text-align: left;
+  }
+
+  // `::: {.col .center}` centers everything in that column. Without this the
+  // `> .col` rule above (specificity 0,0,3) out-ranks the generic
+  // `.reveal .center` (0,0,2) and the column stays left-aligned; `.col.center`
+  // (0,0,4) wins it back.
+  > .col.center { text-align: center; }
+}
+
+// ===========================================================================
+// CARD GRIDS
+// `::: {.card icon="images/icons/plan.svg" color="dodgerblue"}` — a grid of
+// bordered boxes, each one an optional icon (or photo) plus a heading, some
+// prose, and an optional `[tag]{.tag}` chip. lexis.lua's group_cards wraps any
+// run of consecutive `.card` Divs in a `.card-grid` and turns the attributes
+// into the markup and custom properties used below (see its header for the
+// full contract).
+//
+// NOTE ON THE NAME: comments elsewhere in this file call the SLIDE surface the
+// "card" (the xaringan light box inside the gray letterbox). These are the
+// author-facing content boxes — unrelated, and always `.card` / `.card-grid` /
+// `.card-*` as a real class.
+//
+// Everything is sized in `em` off the grid's own font-size, so one card scales
+// as a unit: drop the whole grid in `::: {.font80}` (or set `font-size` on the
+// card) and the icon tile, padding, radius and chip all follow.
+//
+// One accent color drives the whole box — heading, icon tile, border, chip,
+// badge — via `--lexis-card-accent`, mixed against white/black with
+// `color-mix()` rather than hand-picked tints so any color the author names
+// works. Cards are transparent-to-content: a `.fragment`, `.font70` or
+// `.center` class on a `::: {.card}` behaves as it would anywhere else, which
+// is also how a card grid reveals one box at a time (`::: {.card .fragment}`)
+// — a `. . .` pause between cards would instead split the run into two grids.
+// ===========================================================================
+.reveal .card-grid {
+  display: grid;
+  // group_cards writes --lexis-card-cols; the fallback is only for a
+  // hand-written `.card-grid` div.
+  grid-template-columns: repeat(var(--lexis-card-cols, 2), minmax(0, 1fr));
+  gap: $cards-gap;
+  align-items: stretch;   // every card in a row is as tall as the tallest
+  margin: 0.5em 0;
+  text-align: left;
+}
+
+.reveal .card {
+  --lexis-card-accent: #{$color-blue};
+  position: relative;     // for the absolutely-positioned .card-badge
+  display: flex;
+  flex-direction: column;
+  padding: 0.75em 0.85em;
+  font-size: 0.8em;
+  line-height: 1.3;
+  background-color: $color-white;
+  border-radius: 0.6em;
+  overflow: hidden;       // clips the `image=` photo band to the rounded corners
+  // The outline is a RING, not a `border` — deliberately. `overflow` clips at
+  // the PADDING edge, so with a real border an `image=` band bleeding out
+  // through the padding stops 2px short of the card's visual edge and squares
+  // off its corners against the border's inner radius. A ring is painted
+  // outside the padding box, follows the radius, and is never clipped, so the
+  // band reaches the true edge with the full corner. Variants (below) recolor
+  // it by setting --lexis-card-ring, not by restating the shadow.
+  --lexis-card-ring: color-mix(in srgb, var(--lexis-card-accent) 30%, #{$color-white});
+  box-shadow: 0 0 0 2px var(--lexis-card-ring), 0 2px 6px rgba(0, 0, 0, 0.07);
+
+  // The heading is `.h1`..`.h6` here, not a real `<h_>`: lexis.lua's demote()
+  // rewrites any Div-nested heading (see its comment). Match both so a card
+  // built by hand in raw HTML looks the same.
+  h1, h2, h3, h4, h5, h6,
+  .h1, .h2, .h3, .h4, .h5, .h6 {
+    color: var(--lexis-card-accent);
+    font-size: 1.35em;
+    margin: 0 0 0.2em;
+  }
+
+  p { margin: 0 0 0.35em; }
+  > :last-child { margin-bottom: 0; }
+  ul, ol { margin: 0 0 0.35em; }
+  // reveal.css caps every slide image at `max-width: 95%` (so a stray big image
+  // never blows out a slide). Inside a card the images are ours and already
+  // sized exactly — leaving the cap on made an `image=` band stop 5% short of
+  // the card's right edge, which reads as a misaligned photo.
+  img {
+    box-shadow: none;
+    max-width: none;
+    max-height: none;
+  }
+}
+
+// ---- Card icon tile --------------------------------------------------------
+// Holds whatever the author gave as the icon: an icon-font glyph from any
+// library ({{< fa >}}, {{< bi >}}, {{< iconify >}}, `fa()`), an emoji, or an
+// image file. lexis.lua builds this Div from `icon=` or from an icon-only first
+// line of the card.
+//
+// The tile's own font-size is never touched — `width`/`height` are in `em`, so
+// changing it here would resize the box. Glyph and emoji sizing goes on the
+// inner `<p>` instead; `color` is inherited by font icons, which is what makes
+// them take the card's accent with no `.tint` needed.
+.reveal .card .card-icon {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  width: 2.3em;
+  height: 2.3em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.4em;
+  border-radius: 0.45em;
+  color: var(--lexis-card-accent);
+  background-color: color-mix(in srgb, var(--lexis-card-accent) 15%, #{$color-white});
+
+  > p {
+    margin: 0;
+    font-size: 1.35em;
+    line-height: 1;
+  }
+  // ...but an image is sized as a picture, not as text, so it must not inherit
+  // that bump — it may or may not sit inside a <p> depending on how it was
+  // written, hence the :has() rather than a structural assumption.
+  > p:has(> img) { font-size: inherit; }
+  img {
+    width: 1.45em;
+    height: 1.45em;
+    object-fit: contain;
+    border: 0;
+    margin: 0;
+  }
+}
+// `::: {.card .center}` centers the tile along with the text (the generic
+// `.center` only handles text-align, and the tile is a flex item).
+.reveal .card.center .card-icon { align-self: center; }
+
+// `.tint` — paint the accent color THROUGH the icon file instead of showing the
+// file's own colors, so one gray line-art SVG can serve every card in a deck.
+// The tile itself can't be the masked element (it would take the mask's shape
+// and lose its tinted square), so the mask goes on a pseudo-element sized like
+// the <img> it replaces. --lexis-card-icon is the url(), written by lexis.lua.
+.reveal .card.tint .card-icon img { display: none; }
+.reveal .card.tint .card-icon::after {
+  content: "";
+  width: 1.45em;
+  height: 1.45em;
+  background-color: var(--lexis-card-accent);
+  -webkit-mask: var(--lexis-card-icon) center / contain no-repeat;
+  mask: var(--lexis-card-icon) center / contain no-repeat;
+}
+
+// ---- Card photo band -------------------------------------------------------
+// `image="path.jpg"` — a cropped strip across the top of the card. The negative
+// margins bleed it out through the card's padding to the (clipped) corners;
+// they're in the same `em` as the padding they cancel, so this survives a
+// font-size change on the card.
+.reveal .card .card-photo {
+  margin: -0.75em -0.85em 0.55em;
+  // Per-card override, e.g. `::: {.card image="x.jpg"
+  // style="--lexis-card-photo-height:8em"}`.
+  height: var(--lexis-card-photo-height, 5em);
+  overflow: hidden;
+
+  p { margin: 0; }
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;   // fills the strip at any aspect ratio, no squashing
+    border: 0;
+    margin: 0;
+  }
+}
+// ---- Card badge ------------------------------------------------------------
+// `badge="TODAY'S FOCUS"` — a small accent flag in the card's top-right corner.
+.reveal .card .card-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.25em 0.6em;
+  font-family: $font-header;
+  font-size: 0.62em;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: $color-white;
+  background-color: var(--lexis-card-accent);
+  border-bottom-left-radius: 0.5em;
+
+  p { margin: 0; }
+}
+// The badge is out of flow, so make room for it rather than letting it land on
+// the content: extra top padding on a badged card. UNLESS the card also has a
+// photo band — that bleeds up through the padding (its negative margin is tied
+// to the default value) and the badge is meant to sit over it anyway.
+.reveal .card:has(> .card-badge) { padding-top: 1.6em; }
+.reveal .card:has(> .card-badge):has(> .card-photo) { padding-top: 0.75em; }
+
+// ---- Tag chip --------------------------------------------------------------
+// `[read-only]{.tag}` — a monospace chip. Usable anywhere on a slide; inside a
+// card it picks up the card's accent (the var is set on `.card`, so outside one
+// it is unset and the fallback gray applies). As the last thing in a card it is
+// pushed to the bottom edge so a row of cards lines its chips up regardless of
+// how much prose each one has.
+.reveal .tag {
+  display: inline-block;
+  padding: 0.1em 0.45em;
+  border-radius: 0.3em;
+  font-family: $font-mono;
+  font-size: 0.85em;
+  background-color: color-mix(in srgb, var(--lexis-card-accent, #{$color-gray}) 14%, #{$color-white});
+  color: color-mix(in srgb, var(--lexis-card-accent, #{$color-gray}) 80%, #{$color-black});
+}
+.reveal .card > p:last-child:has(> .tag),
+.reveal .card > .tag:last-child { margin-top: auto; }
+
+// ---- Icon beside the heading ----------------------------------------------
+// `::: {.card .icon-left}` — the two-column card look: icon and heading share a
+// row, everything after it spans the full width. The card becomes a grid, so
+// the default is set first and the two exceptions (same specificity, later
+// source order) win it back for the icon and whatever follows it.
+.reveal .card.icon-left {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 0.55em;
+  align-items: center;
+  // Stack the rows from the top. A card stretched to match a taller neighbour
+  // would otherwise have grid's default `align-content: stretch` inflate its
+  // auto rows, pushing the icon/heading row down out of line with the others.
+  align-content: start;
+
+  > * { grid-column: 1 / -1; }
+  > .card-icon { grid-column: 1; grid-row: 1; margin-bottom: 0; }
+  > .card-icon + * { grid-column: 2; grid-row: 1; margin-bottom: 0; }
+}
+
+// ---- Highlighted card ------------------------------------------------------
+// `::: {.card .highlight}` — the "this one" card: accent-tinted fill, full
+// accent border, and a soft accent halo (the box's own shadow isn't clipped by
+// its `overflow: hidden`, only its children are).
+.reveal .card.highlight {
+  background-color: color-mix(in srgb, var(--lexis-card-accent) 12%, #{$color-white});
+  --lexis-card-ring: var(--lexis-card-accent);
+  box-shadow:
+    0 0 0 2px var(--lexis-card-ring),
+    0 0 0 0.28em color-mix(in srgb, var(--lexis-card-accent) 20%, transparent);
+}
+// The tile inverts on a highlighted card — solid accent, so whatever is in it
+// (glyph, emoji, masked SVG) has to flip to white to stay visible.
+.reveal .card.highlight .card-icon {
+  color: $color-white;
+  background-color: var(--lexis-card-accent);
+}
+// The card is already accent-tinted, so the chip's usual tint would vanish into
+// it — go the other way and lift it toward white.
+.reveal .card.highlight .tag {
+  background-color: color-mix(in srgb, var(--lexis-card-accent) 22%, #{$color-white});
+}
+.reveal .card.highlight.tint .card-icon::after { background-color: $color-white; }
+
+// ---- Cards on inverse / dark slides ---------------------------------------
+// Same accent, mixed toward black instead of white. The heading needs `.card`
+// in its selector to out-specify the `.inverse` block's blanket white headings.
+.reveal section.inverse .card,
+.reveal .inverse .card {
+  color: $color-white;
+  background-color: color-mix(in srgb, var(--lexis-card-accent) 8%, #{$color-black});
+  --lexis-card-ring: color-mix(in srgb, var(--lexis-card-accent) 50%, #{$color-black});
+
+  .card-icon {
+    background-color: color-mix(in srgb, var(--lexis-card-accent) 22%, #{$color-black});
+  }
+  .tag {
+    background-color: color-mix(in srgb, var(--lexis-card-accent) 22%, #{$color-black});
+    color: color-mix(in srgb, var(--lexis-card-accent) 45%, #{$color-white});
+  }
+}
+.reveal section.inverse .card,
+.reveal .inverse .card {
+  h1, h2, h3, h4, h5, h6,
+  .h1, .h2, .h3, .h4, .h5, .h6 {
+    color: color-mix(in srgb, var(--lexis-card-accent) 60%, #{$color-white});
+  }
+}
+.reveal section.inverse .card.highlight,
+.reveal .inverse .card.highlight {
+  background-color: color-mix(in srgb, var(--lexis-card-accent) 20%, #{$color-black});
+}
+// Solid accent tile, same as on a light slide. Stated explicitly because the
+// generic inverse tile rule above matches at equal specificity and would
+// otherwise win this on source order alone.
+.reveal section.inverse .card.highlight .card-icon,
+.reveal .inverse .card.highlight .card-icon {
+  color: $color-white;
+  background-color: var(--lexis-card-accent);
+}
+
+// ===========================================================================
+// FOOTERS (xaringan `.footer-small` link bar / `.footer-large` block).
+//
+// The repeated link bar is Quarto's native `footer:` (one persistent `.footer`
+// element shown on every slide) restyled as the lexis black bar. `.footer-small`
+// is kept as an alias so hand-written bars read like the originals.
+// `.footer-large` is placed inline on the title/closing slides.
+//
+// IMPORTANT: stay `position: fixed` (reveal's own default for `.footer`), not
+// `absolute` — fixed correctly anchors to the real browser viewport (verified
+// empirically: neither `.reveal` nor any of its ancestors carry a transform/
+// perspective/filter, so nothing hijacks the containing block here).
+//
+// IMPORTANT: the selector needs the repeated `.reveal.reveal` specificity
+// bump. Quarto's own bundled `plugin/quarto-support/footer.css` ships its
+// OWN `.reveal .footer { position: fixed; bottom: 18px; text-align: center;
+// margin: 0 auto; z-index: 2; font-size: 18px; }` and that stylesheet <link>
+// is emitted AFTER our theme's in <head>. Equal specificity + later source
+// order means IT wins each of those properties, not us — verified by
+// rendering, headless-screenshotting, and reading getComputedStyle: our
+// plain `.reveal .footer` rule was silently losing `bottom` (18px, not 0 —
+// a visible gap below the bar) and `text-align`/`margin`/`z-index`/
+// `font-size` too. One extra `.reveal` class outweighs their rule
+// regardless of link order, without resorting to `!important`.
+// ===========================================================================
+.reveal.reveal .footer,
+.reveal.reveal div.footer-small {
+  background-color: $color-black;
+  // Anchored to the card, not the window: bottom/left/right are inset by the
+  // letterbox band (see --lexis-lb-* on .reveal-viewport) so the bar hugs the
+  // slide's bottom edge and spans the slide width, instead of the window's.
+  position: fixed;
+  bottom: var(--lexis-lb-y);
+  left:  var(--lexis-lb-x);
+  right: var(--lexis-lb-x);
+  // Height, type and inset all scale with the stage; see --lexis-chrome-px.
+  height: calc(20 * var(--lexis-chrome-px)); width: auto;
+  margin: 0; padding: 0;
+  // Per-document override: set `footer-align: center` (or `left`/`right`)
+  // in the YAML front matter; lexis.lua turns that into this custom
+  // property. Defaults to the original left-aligned xaringan look.
+  text-align: var(--lexis-footer-align, left);
+  z-index: 10;
+  color: $color-white;
+  font-size: calc(13.33 * var(--lexis-chrome-px)); // 10pt at 1:1
+  line-height: calc(20 * var(--lexis-chrome-px));
+
+  p, span {
+    margin: 0;
+    padding-left: var(--lexis-footer-pad, calc(15 * var(--lexis-chrome-px)));
+    color: $color-white;
+  }
+  a { color: $color-white; text-decoration: none; }
+}
+
+// reveal's slide number is positioned against the full window (right/bottom
+// 8px), so it too lands in the gray letterbox band. Push it back onto the card
+// by the band size + a small margin, so it sits in the slide's bottom-right
+// corner like the old xaringan page number. The `.reveal.reveal` bump is
+// REQUIRED: quarto-support's footer.css (loaded after this theme) also sets
+// `.reveal .slide-number { bottom; right }` at equal specificity, so a plain
+// `.reveal .slide-number` here silently loses on source order.
+.reveal.reveal .slide-number {
+  right:  calc(var(--lexis-lb-x) + 14 * var(--lexis-chrome-px));
+  bottom: calc(var(--lexis-lb-y) + 12 * var(--lexis-chrome-px));
+  // Scaled with the stage like the footer bar (see --lexis-chrome-px); 20px at
+  // 1:1, a touch larger than footer.css's default 16px.
+  font-size: calc(20 * var(--lexis-chrome-px));
+  color: $color-gray; // #696969, matching the old xaringan page number
+}
+
+// When a footer bar is present the number defaults to sitting inside the bar's
+// 20px vertical span; lift it clear, still card-anchored. `:has()` already
+// out-specifies footer.css's plain `.reveal .slide-number`, but match the
+// `.reveal.reveal` bump above for consistency.
+.reveal.reveal:has(> .footer) .slide-number {
+  bottom: calc(var(--lexis-lb-y) + 28 * var(--lexis-chrome-px));
+}
+
+// ---- Corner controls (the bottom-left button group) ------------------------
+// Built by lexis-controls.html, which appends `.lexis-controls` to <body> and
+// ADOPTS the reveal.js-menu hamburger into it. See that file for the mechanism;
+// this is the look. Bottom to top: the hamburger, an up-arrow handle, and a
+// collapsible tray holding Full screen, Slide overview and Home.
+//
+// Positioned like every other piece of lexis chrome — inset by the letterbox
+// band so it rides the CARD's bottom-left corner, not the window's, and
+// mirroring the slide number's 14px/12px offsets in the opposite corner.
+.lexis-controls {
+  position: fixed;
+  left:   calc(var(--lexis-lb-x) + 14px);
+  bottom: calc(var(--lexis-lb-y) + 12px);
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  width: 42px;
+
+  &.is-hidden { display: none; }
+}
+
+// With a footer bar present, lift clear of it — the same 28px the slide number
+// takes above.
+.reveal:has(> .footer) ~ .lexis-controls {
+  bottom: calc(var(--lexis-lb-y) + 28px);
+}
+
+// The arrow plus its tray: the hover/focus surface that expands the stack. The
+// hamburger sits OUTSIDE it, so hovering the hamburger expands nothing.
+.lexis-controls-flyout {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+// The tray collapses via the grid `0fr` -> `1fr` trick, so the hidden buttons
+// take no space — and no hover area — at all; the inner stack clips inside the
+// row.
+.lexis-controls-tray {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 200ms ease;
+}
+
+.lexis-controls-stack {
+  overflow: hidden;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  // The gap between the tray and the arrow lives INSIDE the stack and only in
+  // the open state: a `0fr` row clamps content but NOT padding, so a constant
+  // padding would leave a phantom 8px hover strip above the arrow while
+  // collapsed — hovering empty space would pop the tray open.
+  padding-bottom: 0;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 160ms ease, transform 200ms ease, padding-bottom 200ms ease;
+}
+
+// Open state. No `:hover` selector here on purpose: hovering is wired in JS
+// (`.is-open`), so that a click on the arrow can genuinely close the tray while
+// the cursor is still over it. A CSS `:hover` rule would force it back open and
+// make the click a no-op. `:focus-within` keeps it open for keyboard users
+// tabbing through the buttons.
+.lexis-controls-flyout:focus-within,
+.lexis-controls-flyout.is-open {
+  .lexis-controls-tray  { grid-template-rows: 1fr; }
+  .lexis-controls-stack { opacity: 1; transform: none; padding-bottom: 8px; }
+  .lexis-controls-arrow svg { transform: rotate(180deg); }
+}
+
+// The shared tile. Quiet at rest — the same gray as the slide number, on a
+// faint tinted surface — and flipping to the deck's link blue with a white
+// glyph on hover, so the group reads as chrome until you reach for it.
+.lexis-ctrl {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  // The adopted plugin button computes content-box (44px with its border), so
+  // pin the box model or that one tile comes out 2px wider than the rest.
+  box-sizing: border-box;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+
+  border: 1px solid rgba(105, 105, 105, 0.28);
+  border-radius: 8px;
+  background: rgba(105, 105, 105, 0.08);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: $color-gray;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    color 150ms ease,
+    transform 100ms ease;
+
+  svg {
+    display: block;
+    width: 22px;
+    height: 22px;
+    transition: transform 200ms ease;
+  }
+
+  &:hover {
+    background: $link-color;
+    border-color: $link-color;
+    color: $color-white;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $link-color;
+    outline-offset: 2px;
+  }
+
+  // Momentary press. A transform here is safe: the tile is its own layer and
+  // nothing else in the column moves with it.
+  &:active {
+    transform: scale(0.92);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+  }
+}
+
+// ---- The hamburger, once it is inside the group ----------------------------
+// The reveal.js-menu plugin ships its button as a `position: fixed` tile in the
+// bottom-left corner of `.reveal`. lexis-controls.html moves the node into
+// `.lexis-controls` and tags it `.lexis-ctrl`, at which point every one of the
+// plugin's positioning rules (all scoped under `.reveal`) stops matching. What
+// is left to do here: neutralize the fixed positioning as a fallback for the
+// blink before the move, and rebuild the glyph.
+//
+// The stock icon is a background-image data URI with `$link-color` baked into
+// its `fill=`, so `currentColor` can never reach it and it cannot follow the
+// hover flip. Replaced with the identical path as a MASK over `currentColor`,
+// which does. The `html` prefix outranks the plugin's own CSS (loaded after
+// this theme).
+html .lexis-controls .slide-menu-button {
+  position: static;
+  left: auto;
+  bottom: auto;
+
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    // `!important`: the deck's global link color (`.reveal a`, itself
+    // `!important`) would otherwise paint the glyph blue. `inherit` follows the
+    // button color, so the hover flip to white keeps working.
+    color: inherit !important;
+    &:hover, &:focus { color: inherit !important; background: transparent; }
+  }
+
+  // Flex-center the glyph: the plugin renders it as an inline-block `::before`
+  // sitting on the `<i>`'s text baseline, which lands it a hair off-center in
+  // the tile. Making the `<i>` a flex box and the `::before` a block takes the
+  // baseline out of the equation.
+  .fa-bars {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .fa-bars::before {
+    // The plugin's own `::before` rules (which carried the `content`) are all
+    // scoped under `.reveal` and stop matching after the move, so the
+    // pseudo-element is declared from scratch.
+    content: "";
+    display: block;
+    width: 22px;
+    height: 22px;
+    vertical-align: 0;
+    background: currentColor;
+    -webkit-mask-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/></svg>');
+    mask-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/></svg>');
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-size: 22px 22px;
+    mask-size: 22px 22px;
+  }
+}
+
+// Before the adoption runs — and on any page where it never does — keep the
+// stock button invisible so a stray hamburger never flashes in the corner.
+html .reveal .slide-menu-button { visibility: hidden; }
+
+// ---- Jump-to-slide input (`g`) ---------------------------------------------
+// reveal ships the jump box as a bare transparent input pinned at 15px/15px,
+// which reads as a stray text field floating on the slide. Restyle it as a pill
+// in the same family as the corner controls: same 42px height, same radius,
+// border and surface, same blue accent — and anchored to the CARD's top-left
+// corner, mirroring the controls' 14px/12px in the corner below it.
+//
+// The size stays fixed rather than scaling with the stage (see
+// --lexis-chrome-px): this is something you click and type into, like the
+// control tiles, not something drawn on the slide.
+.reveal .jump-to-slide {
+  left: calc(var(--lexis-lb-x) + 14px);
+  top:  calc(var(--lexis-lb-y) + 12px);
+  font-size: 20px;
+}
+
+.reveal .jump-to-slide-input {
+  font-family: $font-body;
+  font-size: 18px;
+  line-height: 1;
+  box-sizing: border-box;
+  height: 42px;
+  // Snug around the "Jump to slide" placeholder plus the side padding.
+  width: 8.5em;
+  padding: 0 14px;
+  text-align: left;
+
+  // `!important`: reveal's own `.has-dark-background` rule otherwise flips the
+  // text to white on dark slides. The dark variant below re-flips it with its
+  // own `!important`, so the color is always stated explicitly rather than
+  // inherited from whichever rule happens to win.
+  color: $color-black !important;
+  caret-color: $link-color;
+  background: rgba(255, 255, 255, 0.85);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(105, 105, 105, 0.28);
+  border-radius: 8px;   // matches .lexis-ctrl
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+
+  &::placeholder { color: rgba(105, 105, 105, 0.75); opacity: 1; }
+
+  // While the placeholder is showing, hide the caret so it never overlaps the
+  // hint text; it comes back with the first typed digit.
+  &:placeholder-shown { caret-color: transparent; }
+
+  // lexis-controls.html flips the input to `type="number"` (which is what keeps
+  // browser contact-autofill off a box that only ever takes a slide number);
+  // hide the spinner arrows that come with that type.
+  -moz-appearance: textfield;
+  appearance: textfield;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $link-color;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18), 0 0 0 3px rgba(0, 123, 255, 0.25);
+  }
+}
+
+// Dark card: the same light-glass treatment the control tiles take there.
+.reveal:has(.slides section.present.inverse) .jump-to-slide-input,
+.reveal.has-dark-background .jump-to-slide-input {
+  color: $color-white !important;
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.28);
+  &::placeholder { color: rgba(255, 255, 255, 0.7); }
+}
+
+// reveal's edge arrows are a HANDHELD affordance and nothing else. On a phone
+// they are the only visible way to move through the deck — tap to advance, with
+// nothing to guess at — but on a laptop they are chrome sitting on top of a
+// slide next to a keyboard that already does the job, and they show up in
+// screenshots and in the PDF export. So `controls: true` in _extension.yml
+// builds them, and this hides them everywhere except the handheld-portrait
+// block above, which turns them back on.
+//
+// `!important` is load-bearing: reveal writes `display` as an INLINE style on
+// the container from its own config, so a plain rule here never wins.
+.reveal .controls { display: none !important; }
+
+// Reveal pins the container to the four edges of `.reveal`, i.e. the WINDOW, so
+// the left/right arrows land out in the gray band whenever the window is wider
+// than 16:9. Same fix as the footer and the slide number: inset the container by
+// the letterbox so the arrows ride the card's edges.
+.reveal.reveal .controls[data-controls-layout='edges'] {
+  top:    var(--lexis-lb-y);
+  right:  var(--lexis-lb-x);
+  bottom: var(--lexis-lb-y);
+  left:   var(--lexis-lb-x);
+}
+// ...and match the slide number's gray rather than reveal's black. `color` is
+// enough: the arrows are SVGs drawn with `fill: currentColor`.
+.reveal.reveal .controls { color: $color-gray; }
+
+// Flip the hamburger, the slide number AND the arrows to white on inverse /
+// dark-background slides so they stay visible (and matching) on dark cards — the
+// hardcoded gray above would otherwise be invisible there.
+.reveal:has(.slides section.present.inverse) .slide-number,
+.reveal.reveal.has-dark-background .slide-number { color: #fff; }
+.reveal.reveal:has(.slides section.present.inverse) .controls,
+.reveal.reveal.has-dark-background .controls { color: #fff; }
+// The corner controls take the same flip. They are a SIBLING of `.reveal` (the
+// script appends them to <body>), hence the `~` combinator. Light glass plus a
+// light glyph keeps them as quiet on a dark card as the gray tile is on a light
+// one; the hover flip to blue is restated because this selector outranks the
+// base `:hover` above.
+.reveal:has(.slides section.present.inverse) ~ .lexis-controls .lexis-ctrl,
+.reveal.has-dark-background ~ .lexis-controls .lexis-ctrl {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.14);
+  color: $color-white;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.20);
+
+  &:hover {
+    background: $link-color;
+    border-color: $link-color;
+    color: $color-white;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.30);
+  }
+}
+
+.reveal div.footer-large {
+  position: absolute;
+  bottom: 150px; right: 50px;
+  height: 100px; width: 100%;
+  margin-bottom: 0;
+}
+
+// ---- Progress bar -----------------------------------------------------
+// `.progress span` (the fill) uses `background-color: currentColor`, so
+// setting `color` here is enough to recolor it; the track underneath it
+// keeps reveal's own default translucent-black.
+.reveal .progress {
+  color: $progress-color;
+}
+
+// ===========================================================================
+// PDF EXPORT (`?print-pdf`)
+//
+// This is the mode behind every route to a PDF: the `e` shortcut, the browser's
+// own Print dialog on a `?print-pdf` URL, and `renderthis::to_pdf()` /
+// `pagedown::chrome_print()` (which navigate to `?print-pdf` for you before
+// printing — so the fix for a bad-looking PDF lives HERE, not in the build
+// script).
+//
+// reveal doesn't print the deck as it stands; it REBUILDS the DOM. Every leaf
+// <section> is lifted out of `.slides` and re-parented into its own
+// `div.pdf-page` — one PDF page each, stacked in a single tall column — and
+// `html` picks up `reveal-print print-pdf`. Three things lexis relies on are
+// casualties of that rebuild, and all three were visible in the exported PDF.
+// ===========================================================================
+html.print-pdf {
+
+  // ---- 1. The page color ---------------------------------------------------
+  // reveal paints each `.pdf-page` with an inline `background` COPIED from the
+  // computed background of `.reveal-viewport` at the moment the print view
+  // activates. On screen that element is the GRAY LETTERBOX around the card, so
+  // out of the box every light slide printed on a #696969 page — the single
+  // biggest reason the export looked nothing like Chrome. On paper there is no
+  // letterbox (the page IS the 1600x900 card), so hand it the card color and
+  // let `.inverse` / `{{< bg-color >}}` slides paint over it as they always do.
+  .reveal-viewport {
+    background-color: $body-bg;
+
+    // Same reason: the letterbox band is zero here. Its screen value is derived
+    // from `vw`/`vh`, which during an export are whatever the printing browser's
+    // viewport happened to be — pin it instead of letting a stale band shove the
+    // footer bar and the slide number off the edge of the page.
+    --lexis-lb-x: 0px;
+    --lexis-lb-y: 0px;
+
+    // Same reasoning for the chrome scale: on paper the page IS the 1600x900
+    // card, so the footer bar and the slide number are drawn at 1:1. Pin it
+    // rather than trusting whatever `--slide-scale` the printing browser's
+    // viewport left behind.
+    --lexis-chrome-px: 1px;
+  }
+
+  // ---- 2. The content insets -----------------------------------------------
+  // reveal's print stylesheet zeroes every section's padding with `!important`
+  // (`html.reveal-print .reveal .slides section { padding: 0 !important }`),
+  // which threw away the xaringan insets set way above and ran every headline
+  // into the top-left corner of the page. Restore them — `!important` is
+  // REQUIRED to beat reveal's own.
+  .reveal .slides section:not(.stack) {
+    padding: 45px 90px 60px !important;
+  }
+
+  // ---- 3. The vertical offset ----------------------------------------------
+  // reveal vertically centers slides it considers "centered" by writing an
+  // inline `top` on the section — and the flag it reads is the `center` CLASS.
+  // In lexis (like xaringan) `center` means HORIZONTAL centering and
+  // `{{< middle >}}` does the vertical kind itself, so that offset is pure
+  // damage: the title slide printed shoved a third of a page down, its black
+  // card hanging off the bottom edge with a gray band above it. Pin every
+  // section to the top of its page and let `.middle` center exactly as on
+  // screen. (`.pdf-page > section` only exists in this mode, so this can't
+  // leak into the deck.)
+  .reveal .slides .pdf-page > section {
+    top: 0 !important;
+  }
+
+  // ---- 4. `{{< middle >}}` -------------------------------------------------
+  // ...and now that the section is pinned to the top, `.middle` has to do the
+  // vertical centering itself — which it can't, because the same reveal print
+  // rule that zeroed the padding also forces `display: block !important` onto
+  // every section, collapsing the flex column `.middle` is built on. Both
+  // declarations are `!important`, so this is decided on specificity: reveal's
+  // selector carries three classes, and `.pdf-page` is the fourth here, which
+  // is exactly why this rule is written against it.
+  .reveal .slides .pdf-page > section.middle {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  // ---- 5. The slide number -------------------------------------------------
+  // reveal doesn't print the live slide number; it builds a fresh
+  // `.slide-number-pdf` inside every `.pdf-page`. Two lexis rules written
+  // against "the CURRENT slide" mis-fire on those, because in print every slide
+  // is current at once:
+  //   * `{{< no-slide-number >}}` hides the number through the
+  //     `no-slide-number` state that reveal mirrors onto `.reveal-viewport`.
+  //     Mirrored once and never cleared here, so that one shortcode on the
+  //     title slide blanked the number on every page of the export.
+  //   * the white-on-dark override keys off `:has(section.present.inverse)`,
+  //     and the print view marks EVERY section `.present`, so a single inverse
+  //     slide anywhere turned all of them white — invisible on the light pages.
+  // Decide both per page instead. `.pdf-page` is the extra class that lets
+  // these outrank the originals, `!important` included.
+  .reveal .slides .pdf-page > .slide-number-pdf {
+    display: block !important;
+    color: $color-gray;
+  }
+  .reveal .slides .pdf-page:has(> section.inverse) > .slide-number-pdf,
+  .reveal .slides .pdf-page:has(> section[data-background-color]) > .slide-number-pdf {
+    color: $color-white;
+  }
+  .reveal .slides .pdf-page:has(> section[data-state~="no-slide-number"]) > .slide-number-pdf {
+    display: none !important;
+  }
+
+  // ---- 6. Tall images near the page bottom ---------------------------------
+  // Chrome's print-to-PDF rasterizer silently DROPS any image whose bottom edge
+  // lands in roughly the bottom ~15% of the page. Verified headlessly against a
+  // real export: the identical image prints when positioned higher and vanishes
+  // once its bottom is pushed past ~780px of the 900px page — independent of the
+  // background, the ICC profile, and z-order (it renders fine on screen and even
+  // in print-media emulation; only the PDF rasterizer culls it). The usual way
+  // into that zone is a title stacked above a tall, centered image, e.g. a
+  // {{< bg-color >}} hero slide. Cap image height in the export so the bottom
+  // edge stays clear of the cull band; the live deck is untouched. 600px keeps a
+  // title+image slide's image bottom around 748px, with margin below the cliff.
+  .reveal .slides section img {
+    max-height: 600px !important;
+  }
+
+  // ---- 7. Live UI that has no place on paper -------------------------------
+  // `position: fixed` would stamp both of these over the first page.
+  .lexis-controls { display: none !important; }
+  .reveal .jump-to-slide { display: none !important; }
+
+  // ---- 8. The footer, once per page ----------------------------------------
+  // The footer is a single `position: fixed` overlay: on screen it rides the
+  // card, but the export is a block flow of `.pdf-page` boxes, so the bar
+  // belongs to no page and lands on at most one of them. On paper it is just
+  // text, so hide the live one and stamp every page with its own copy as a
+  // `::after` on the page box.
+  //
+  // The TEXT comes from lexis-print-footer.html, which reads whatever `footer:`
+  // in the deck's YAML rendered (links flattened to plain text) and injects the
+  // matching `content:` rule — CSS cannot read another element's text. So this
+  // block is styling only, and a deck with no footer simply never gets a
+  // `content`, which means no box is generated at all rather than an empty bar.
+  .reveal .slides .pdf-page {
+    // reveal's print stylesheet already sets this; stated so the bar below
+    // cannot end up anchored to some outer box if that ever changes.
+    position: relative;
+  }
+
+  .reveal .slides .pdf-page::after {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 20px;
+    box-sizing: border-box;
+    background-color: $color-black;
+    color: $color-white;
+    font-size: 10pt;
+    line-height: 20px;
+    text-align: var(--lexis-footer-align, left);
+    padding-left: var(--lexis-footer-pad, 15px);
+    z-index: 10;
+  }
+
+  // With a bar stamped on the page, lift the number clear of it — the same move
+  // the live deck makes with `:has(> .footer)`. `lexis-print-footer` is set on
+  // <html> by the injector, and ONLY when there was footer text to inject, so a
+  // footerless deck keeps the number in the corner.
+  &.lexis-print-footer .reveal .slides .pdf-page > .slide-number-pdf {
+    bottom: 28px;
+  }
+}
+
+// ---- Shadows in every print path -------------------------------------------
+// Chromium's PDF backend cannot rasterize blur: every blurred `box-shadow`
+// prints as a SOLID offset rectangle, so a deck with card shadows exports with
+// gray blocks behind the cards. Drop them for the export and let borders and
+// fills carry the separation. Both classes are listed because the two routes
+// set different ones — `?print-pdf` gets both, but reveal's own print view sets
+// `reveal-print` alone.
+html.print-pdf *,
+html.reveal-print * {
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
