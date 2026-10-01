@@ -1,7 +1,9 @@
 ---
 title: "&nbsp;"
-format: lexis-revealjs
 highlight-style: github
+format: lexis-revealjs
+mouse-wheel: true
+progress: false
 execute:
   echo: false
   warning: false
@@ -67,7 +69,10 @@ summary_dt <- summary_dt_raw %>%
 
 ---
 
-![](images/globalLinePlot.png){fig-align="center" width=100%}
+{{< bg-color "#fff" >}}
+{{< center >}}
+
+![](images/globalLinePlot.png){width=80%}
 
 ---
 
@@ -100,7 +105,7 @@ summary_dt <- summary_dt_raw %>%
 
 Data scraped from autocango.com (China) and carsheet.io (USA)
 
-Interactive version at https://jhelvy.github.io/science-2025/
+Interactive version at <https://jhelvy.github.io/science-2025/>
 
 ---
 
@@ -112,7 +117,7 @@ Interactive version at https://jhelvy.github.io/science-2025/
 
 Data scraped from autocango.com (China) and carsheet.io (USA)
 
-Interactive version at https://jhelvy.github.io/science-2025/
+Interactive version at <https://jhelvy.github.io/science-2025/>
 
 ---
 
@@ -122,7 +127,7 @@ Interactive version at https://jhelvy.github.io/science-2025/
 
 ![](images/supply-chains.png){fig-align="center" width=100%}
 
-[Source: https://thegraduatepress.org/2022/04/01/how-china-came-to-dominate-the-supply-chain-of-rare-earths-and-critical-minerals/]{.font60}
+[Source: <https://thegraduatepress.org/2022/04/01/how-china-came-to-dominate-the-supply-chain-of-rare-earths-and-critical-minerals/>]{.font60}
 
 ---
 
@@ -146,6 +151,8 @@ Interactive version at https://jhelvy.github.io/science-2025/
 
 {{< include subsidy-table/table-static.qmd >}}
 
+<br><br><br><br>
+
 [[https://www.csis.org/blogs/trustee-china-hand/chinese-ev-dilemma-subsidized-yet-striking](https://www.csis.org/blogs/trustee-china-hand/chinese-ev-dilemma-subsidized-yet-striking)]{.font60}
 
 ---
@@ -155,6 +162,8 @@ Interactive version at https://jhelvy.github.io/science-2025/
 <br>
 
 {{< include subsidy-table/table-annotated.qmd >}}
+
+<br><br><br><br>
 
 [[https://www.csis.org/blogs/trustee-china-hand/chinese-ev-dilemma-subsidized-yet-striking](https://www.csis.org/blogs/trustee-china-hand/chinese-ev-dilemma-subsidized-yet-striking)]{.font60}
 
@@ -498,9 +507,11 @@ Guangyuan He, Former Minister of Machinery and Industry (Reuters, 2012)
 
 ## [**Exclude Chinese EVs**]{.center}
 
-### - China "cheated" its way to the top with subsidies
+<br>
 
-### - Chinese EVs are a security threat
+### - China "cheated" with subsidies
+
+### - Need to protect local automakers from Chinese competition
 
 :::
 
@@ -510,9 +521,13 @@ Guangyuan He, Former Minister of Machinery and Industry (Reuters, 2012)
 
 ## [**Engage strategically**]{.center}
 
+<br>
+
 ### - China built real competitive advantages in manufacturing and supply chains
 
 ### - Chinese EVs are winning markets, US OEMs are losing markets
+
+### - Actually address security concerns
 
 :::
 

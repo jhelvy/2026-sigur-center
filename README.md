@@ -1,3 +1,3 @@
-Slides for my talk at the Cosmos Club
+Slides for my talk at the Sigur Center, GWU
 
-April 22, 2016, Washington, DC
+October 6, 2026
