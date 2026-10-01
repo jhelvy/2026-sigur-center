@@ -140,237 +140,21 @@ Interactive version at https://jhelvy.github.io/science-2025/
 
 ---
 
-### [Estimated $230B in subsidies (2009 - 2023)]{.center}
+## [Estimated $230B in subsidies (2009 - 2023)]{.center}
 
-```{=html}
-<div style="text-align:center;">
-<div style="position:relative; display:inline-block;">
-<table style="border-collapse:collapse; table-layout:fixed; font-size:14px; text-align:right; width:674px;">
-<colgroup><col style="width:160px"><col style="width:62px"><col style="width:62px"><col style="width:62px"><col style="width:62px"><col style="width:62px"><col style="width:62px"><col style="width:62px"><col style="width:80px"></colgroup>
-<tr style="background:#a9d6da;">
-  <th style="text-align:left; padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">Type of Support</th>
-  <th style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">2009-2017</th>
-  <th style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">2018</th>
-  <th style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">2019</th>
-  <th style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">2020</th>
-  <th style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">2021</th>
-  <th style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">2022</th>
-  <th style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">2023</th>
-  <th style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">Total</th>
-</tr>
-<tr style="background:#fff;">
-  <td style="text-align:left; padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">Rebate</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">37.8</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">4.3</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">3.3</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">3.5</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">7.4</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">9.2</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">0.0</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box; font-weight:bold;">65.7</td>
-</tr>
-<tr style="background:#fff;">
-  <td style="text-align:left; padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">Sales Tax Exemption</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">10.8</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">7.7</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">6.4</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">6.6</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">16.4</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">30.3</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">39.6</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box; font-weight:bold;">117.7</td>
-</tr>
-<tr style="background:#fff;">
-  <td style="text-align:left; padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">Infrastructure Subsidies</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">2.3</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">0.2</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">0.2</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">0.3</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">0.3</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">0.6</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">0.6</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box; font-weight:bold;">4.5</td>
-</tr>
-<tr style="background:#fff;">
-  <td style="text-align:left; padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">Research &amp; Development</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">2.0</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">3.6</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">3.4</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">3.5</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">4.3</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">3.9</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">4.3</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box; font-weight:bold;">25.0</td>
-</tr>
-<tr style="background:#fff;">
-  <td style="text-align:left; padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">Government Procurement</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">7.8</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">1.6</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">1.4</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">2.9</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">1.7</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">1.8</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">0.8</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box; font-weight:bold;">18.0</td>
-</tr>
-<tr style="background:#fff; font-weight:bold;">
-  <td style="text-align:left; padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">Total</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">60.7</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">17.4</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">14.8</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">16.8</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">30.1</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">45.8</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">45.3</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box; font-weight:bold;">230.9</td>
-</tr>
-<tr style="background:#fff;">
-  <td style="text-align:left; padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">Spending as Share of Total Sales</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">42.4%</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">22.7%</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">23.3%</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">25.4%</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">18.3%</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">15.1%</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">11.4%</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box; font-weight:bold;">18.8%</td>
-</tr>
-<tr style="background:#fff;">
-  <td style="text-align:left; padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">Subsidy per Vehicle (US$)</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">–</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">13,860</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">12,311</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">12,294</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">8,538</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">6,656</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">4,764</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box; font-weight:bold;">–</td>
-</tr>
-</table>
-<div style="position:absolute; left:598px; top:134px; width:72px; height:18px; border:3px solid #E74A2F; border-radius:50%; pointer-events:none;"></div>
-</div>
-</div>
-```
+<br>
+
+{{< include subsidy-table/table-static.qmd >}}
 
 [[https://www.csis.org/blogs/trustee-china-hand/chinese-ev-dilemma-subsidized-yet-striking](https://www.csis.org/blogs/trustee-china-hand/chinese-ev-dilemma-subsidized-yet-striking)]{.font60}
 
 ---
 
-### [Estimated $230B in subsidies (2009 - 2023)]{.center}
+## [Estimated $230B in subsidies (2009 - 2023)]{.center}
 
-```{=html}
-<div style="text-align:center;">
-<div style="position:relative; display:inline-block;">
-<table style="border-collapse:collapse; table-layout:fixed; font-size:14px; text-align:right; width:674px;">
-<colgroup><col style="width:160px"><col style="width:62px"><col style="width:62px"><col style="width:62px"><col style="width:62px"><col style="width:62px"><col style="width:62px"><col style="width:62px"><col style="width:80px"></colgroup>
-<tr style="background:#a9d6da;">
-  <th style="text-align:left; padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">Type of Support</th>
-  <th style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">2009-2017</th>
-  <th style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">2018</th>
-  <th style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">2019</th>
-  <th style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">2020</th>
-  <th style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">2021</th>
-  <th style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">2022</th>
-  <th style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">2023</th>
-  <th style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">Total</th>
-</tr>
-<tr style="background:#fff;">
-  <td style="text-align:left; padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">Rebate</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">37.8</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">4.3</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">3.3</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">3.5</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">7.4</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">9.2</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">0.0</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box; font-weight:bold;">65.7</td>
-</tr>
-<tr style="background:#fff;">
-  <td style="text-align:left; padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">Sales Tax Exemption</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">10.8</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">7.7</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">6.4</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">6.6</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">16.4</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">30.3</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">39.6</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box; font-weight:bold;">117.7</td>
-</tr>
-<tr style="background:#fff;">
-  <td style="text-align:left; padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">Infrastructure Subsidies</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">2.3</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">0.2</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">0.2</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">0.3</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">0.3</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">0.6</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">0.6</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box; font-weight:bold;">4.5</td>
-</tr>
-<tr style="background:#fff;">
-  <td style="text-align:left; padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">Research &amp; Development</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">2.0</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">3.6</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">3.4</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">3.5</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">4.3</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">3.9</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">4.3</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box; font-weight:bold;">25.0</td>
-</tr>
-<tr style="background:#fff;">
-  <td style="text-align:left; padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">Government Procurement</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">7.8</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">1.6</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">1.4</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">2.9</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">1.7</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">1.8</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">0.8</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box; font-weight:bold;">18.0</td>
-</tr>
-<tr style="background:#fff; font-weight:bold;">
-  <td style="text-align:left; padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">Total</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">60.7</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">17.4</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">14.8</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">16.8</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">30.1</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">45.8</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">45.3</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box; font-weight:bold;">230.9</td>
-</tr>
-<tr style="background:#fff;">
-  <td style="text-align:left; padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">Spending as Share of Total Sales</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">42.4%</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">22.7%</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">23.3%</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">25.4%</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">18.3%</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">15.1%</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">11.4%</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box; font-weight:bold;">18.8%</td>
-</tr>
-<tr style="background:#fff;">
-  <td style="text-align:left; padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">Subsidy per Vehicle (US$)</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">–</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">13,860</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">12,311</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">12,294</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">8,538</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">6,656</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box;">4,764</td>
-  <td style="padding:2px 6px; border:1px solid #000; height:22px; box-sizing:border-box; font-weight:bold;">–</td>
-</tr>
-</table>
-<div style="position:absolute; left:598px; top:134px; width:72px; height:18px; border:3px solid #E74A2F; border-radius:50%; pointer-events:none;"></div>
-<div class="fragment">
-<div style="position:absolute; left:598px; top:24px; width:72px; height:40px; border:3px solid #E74A2F; border-radius:50%; pointer-events:none;"></div>
-<div style="position:absolute; left:420px; top:25px; width:170px; height:38px; background:#E74A2F; color:#fff; font-weight:bold; font-size:11px; line-height:1.15; border-radius:4px; display:flex; align-items:center; justify-content:center; text-align:center; padding:2px 4px; box-sizing:border-box;">50% sales tax exemptions<br>30% direct rebates</div>
-</div>
-</div>
-</div>
-```
+<br>
+
+{{< include subsidy-table/table-annotated.qmd >}}
 
 [[https://www.csis.org/blogs/trustee-china-hand/chinese-ev-dilemma-subsidized-yet-striking](https://www.csis.org/blogs/trustee-china-hand/chinese-ev-dilemma-subsidized-yet-striking)]{.font60}
 
@@ -472,15 +256,15 @@ Guangyuan He, Former Minister of Machinery and Industry (Reuters, 2012)
 
 <br>
 
-### Multinational OEMs dominate traditional auto sector through large JVs
+### [Multinational OEMs dominate traditional auto sector through large JVs]{.center}
 
 <br>
 
-### Indigenous non-JV firms dominate emerging EV sector
+### [Indigenous non-JV firms dominate emerging EV sector]{.center}
 
 <br><br><br>
 
-[[Helveston, J. P., Y. Wang, V. Karplus, E. Fuchs (2018) "Institutional Complementarities: The Origins of Experimentation in China's Plug-in Electric Vehicle Industry." _Research Policy_. 48(1), pg. 206-222]{.left}]{.font70}
+[Helveston, J. P., Y. Wang, V. Karplus, E. Fuchs (2018) "Institutional Complementarities: The Origins of Experimentation in China's Plug-in Electric Vehicle Industry." _Research Policy_. 48(1), pg. 206-222]{.font70}
 
 :::
 
@@ -498,15 +282,15 @@ Guangyuan He, Former Minister of Machinery and Industry (Reuters, 2012)
 
 <br>
 
-### Multinational OEMs dominate traditional auto sector through large JVs
+### [Multinational OEMs dominate traditional auto sector through large JVs]{.center}
 
 <br>
 
-### Indigenous non-JV firms dominate emerging EV sector
+### [Indigenous non-JV firms dominate emerging EV sector]{.center}
 
 <br><br><br>
 
-[[Helveston, J. P., Y. Wang, V. Karplus, E. Fuchs (2018) "Institutional Complementarities: The Origins of Experimentation in China's Plug-in Electric Vehicle Industry." _Research Policy_. 48(1), pg. 206-222]{.left}]{.font70}
+[Helveston, J. P., Y. Wang, V. Karplus, E. Fuchs (2018) "Institutional Complementarities: The Origins of Experimentation in China's Plug-in Electric Vehicle Industry." _Research Policy_. 48(1), pg. 206-222]{.font70}
 
 :::
 
@@ -616,6 +400,14 @@ Guangyuan He, Former Minister of Machinery and Industry (Reuters, 2012)
 
 ---
 
+{{< bg-image "images/top-four-1.png" size="cover" >}}
+
+---
+
+{{< bg-image "images/top-four-2.png" size="cover" >}}
+
+---
+
 {{< inverse >}}
 {{< middle >}}
 
@@ -638,29 +430,31 @@ Guangyuan He, Former Minister of Machinery and Industry (Reuters, 2012)
 
 {{< bg-image "images/affordable_cars.png" size="cover" >}}
 
-https://www.nytimes.com/interactive/2026/04/13/opinion/affordable-car-cost.html
+<!-- https://www.nytimes.com/interactive/2026/04/13/opinion/affordable-car-cost.html -->
 
 ---
 
 {{< bg-color "#fff" >}}
 {{< center >}}
+{{< tight >}}
 
 # The EV "Deserts" of America
 
 ![](images/map_usa_new.png){fig-align="center" width=80%}
 
-[[Data: **`r round(total_listings)`M vehicle listings** from 60k dealerships (2016 - 2025), marketcheck.com]{.left}]{.font90}
+[Data: **`r round(total_listings)`M vehicle listings** from 60k dealerships (2016 - 2025), marketcheck.com]{.font90}
 
 ---
 
 {{< bg-color "#fff" >}}
 {{< center >}}
+{{< tight >}}
 
-# The EV "Deserts" of America
+## The EV "Deserts" of America
 
 ![](images/map_usa.png){fig-align="center" width=100%}
 
-[[Data: **`r round(total_listings)`M vehicle listings** from 60k dealerships (2016 - 2025), marketcheck.com]{.left}]{.font90}
+[Data: **`r round(total_listings)`M vehicle listings** from 60k dealerships (2016 - 2025), marketcheck.com]{.font90}
 
 ---
 
@@ -672,7 +466,7 @@ https://www.nytimes.com/interactive/2026/04/13/opinion/affordable-car-cost.html
 
 ---
 
-## [Bipartisan Response (So Far): **Ban Chinese tech**]{.center}
+## [Bipartisan Response: **Ban Chinese tech**]{.center}
 
 ::: {.col}
 
@@ -687,6 +481,10 @@ https://www.nytimes.com/interactive/2026/04/13/opinion/affordable-car-cost.html
 <br>
 
 ### **Block investment**: Stricter Foreign Entities of Concern (FEOC) rules
+
+<br>
+
+### **Ban the tech**: Connected Vehicle Security Act of 2026 bans any connected vehicles with Chinese tech (import or domestic)
 
 :::
 
@@ -746,13 +544,19 @@ https://www.nytimes.com/interactive/2026/04/13/opinion/affordable-car-cost.html
 
 ## [The European Model:<br>Block Imports, Welcome Chinese FDI]{.center}
 
-[Access to cutting-edge battery tech]{.center}
+<br>
 
-[Create local jobs]{.center}
+::: {.center .font120}
+Access to cutting-edge battery tech
 
-[Increase supply chain resilience]{.center}
+Create local jobs
+
+Increase supply chain resilience
+:::
 
 . . .
+
+<br>
 
 ::: {.col}
 
@@ -782,6 +586,8 @@ Producing BEVs and PHEVs for the European market
 
 ## [Technology Licensing Agreements]{.center}
 
+<br>
+
 ### **Ford-CATL**: Licensing battery technology in a Michigan plant
 
 ### **Challenge**: CATL recently added to DOD's list of "Chinese military companies"
@@ -791,6 +597,8 @@ Producing BEVs and PHEVs for the European market
 ::: {.col .fragment}
 
 ## [Chinese FDI<br>into U.S.]{.center}
+
+<br>
 
 ### **Gotion batteries**: Multi-billion dollar investments in Illinois and Michigan
 
@@ -847,22 +655,22 @@ Producing BEVs and PHEVs for the European market
 ---
 
 {{< inverse >}}
+{{< center >}}
 {{< bg-image "images/blue.jpg" size="cover" >}}
 
-<br>
+<br><br>
 
 # Thanks!
 
 ### Slides available at jhelvy.com/slides
 
-::: {.footer-large .white .right}
+<br><br><br><br><br><br>
 
-@jhelvy {{< fa github >}}<br>
-jhelvy.com {{< fa link >}}<br>
-jph@gwu.edu {{< fa paper-plane >}}<br>
-@jhelvy.bsky.social {{< fa bluesky >}}
+jhelvy.com {{< fa globe >}}
 
-:::
+jph@gwu.edu {{< fa paper-plane >}}
+
+@jhelvy {{< fa brands github >}}
 
 ---
 
@@ -1017,10 +825,3 @@ Combine ML algorithm of predicted household vehicle budget (using Census data) w
 
 :::
 
----
-
-{{< bg-image "images/top-four-1.png" size="cover" >}}
-
----
-
-{{< bg-image "images/top-four-2.png" size="cover" >}}
