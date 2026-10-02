@@ -173,7 +173,7 @@ Interactive version at <https://jhelvy.github.io/science-2025/>
 {{< center >}}
 {{< middle >}}
 
-# Institutions Matter
+# [Institutions Matter]{.font120}
 
 ---
 
